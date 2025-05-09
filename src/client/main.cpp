@@ -1,39 +1,28 @@
-#include "common/foo.h"
-
 #include <iostream>
-#include <exception>
 
-#include <SDL2pp/SDL2pp.hh>
-#include <SDL2/SDL.h>
+#include "../common/error_codes.h"
+#include "../common/liberror.h"
 
-using namespace SDL2pp;
+#include "client.h"
 
-int main() try {
-	// Initialize SDL library
-	SDL sdl(SDL_INIT_VIDEO);
+#define AMOUNT_OF_EXPECTED_ARGUMENTS 3
+#define MESSAGE_BAD_AMOUNT_OF_EXPECTED_ARGUMENTS                      \
+    "You must pass " + std::to_string(AMOUNT_OF_EXPECTED_ARGUMENTS) + \
+            " arguments including the executable."
+#define ARG_INDEX_HOSTNAME 1
+#define ARG_INDEX_SERVICE 2
 
-	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	Window window("SDL2pp demo",
-			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			640, 480,
-			SDL_WINDOW_RESIZABLE);
-
-	// Create accelerated video renderer with default driver
-	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	// Clear screen
-	renderer.Clear();
-
-	// Show rendered frame
-	renderer.Present();
-
-	// 5 second delay
-	SDL_Delay(5000);
-
-	// Here all resources are automatically released and library deinitialized
-	return 0;
-} catch (std::exception& e) {
-	// If case of error, print it and exit with error
-	std::cerr << e.what() << std::endl;
-	return 1;
+int main(int argc, char* argv[]) {
+    if (argc != AMOUNT_OF_EXPECTED_ARGUMENTS) {
+        std::cerr << MESSAGE_BAD_AMOUNT_OF_EXPECTED_ARGUMENTS << std::endl;
+        return ErrorCodes::INVALID_ARGUMENTS;
+    }
+    std::string hostname = std::string(argv[ARG_INDEX_HOSTNAME]);
+    std::string service = std::string(argv[ARG_INDEX_SERVICE]);
+    try {
+        Client client = Client(hostname, service);
+        return client.Run();
+    } catch (const LibError& e) {
+        return ErrorCodes::SOCKET_ERROR;
+    }
 }

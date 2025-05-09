@@ -16,10 +16,6 @@ ClientHandler::ClientHandler(Socket&& socket, ServerMonitor& serverMonitor):
     managersMap[CommandType::JOIN_GAME] = [this](const MessageFromClient& request, bool& isInGame) {
         return manageJoinGame(request, isInGame);
     };
-    managersMap[CommandType::LIST_GAMES] = [this](const MessageFromClient& request,
-                                                  const bool& isInGame) {
-        return manageListGames(request, isInGame);
-    };
 }
 
 void ClientHandler::run() {
