@@ -5,4 +5,5 @@ target_sources(taller_common
     PUBLIC
     # .h files
     foo.h
+    error_codes.h
     )
