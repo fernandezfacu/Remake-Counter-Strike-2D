@@ -20,6 +20,11 @@ Puede enviar todos estos requests:
 
     siendo <length-match> un numero de dos bytes big endian
 
+LOBBY DEBERIA ELEGIR SKINS DE AMBOS LADOS
+LOBBY DEBERIA TENER BOTON LISTO
+LOBBY DEBERIA TENER ELEGIR MAPA
+LOBBY DEBERIA DETERMINAR CUANTOS JUGADORES VAN A SER EN LA PARTIDA
+
 - Comprar arma
 
     0x04 <weapon-code>
@@ -65,7 +70,7 @@ Los mensajes que envia el server son
 - Creaste no existosamente tu nombre de usuario
     0x01 0x00
 - Creaste exitosamente una partida
-    0x02 0x01
+    0x02 0x01 
 - No creaste exitosamente una partida
     0x02 0x00
 - Te uniste exitosamente a una partida
@@ -83,14 +88,24 @@ Los mensajes que envia el server son
     - <secondary-weapon-bullets>: dos bytes big endian
 
 - Arranca la fase de compra?
-- Arranca la ronda en sí
+- Arranca la ronda en sí 
+
+[Entiendo que con lo de <phase> ya se maneja ¿]
+
 - Cambio de lado?
+
+[SE MANEJA INTERNAMENTE¿]
+
 - Snapshot de la ronda en sí
 
 <phase>: 
 
 - 0x00 buy_phase
 - 0x01 round_phase
+
+<round>: 
+
+- 1 byte con el numero de ronda (10 maximo)
 
 <bomb>:
 
@@ -122,6 +137,7 @@ Los mensajes que envia el server son
 
 asumo que 1 byte cada uno, dir_x dir_y es adonde miras, pos_x, pos_y la ubicacion del player, pos_cros_x, pos_cros_y donde está clavada la mira (el puntero del mouse basicamente)
 
+- money
 - p-weapon
 - p-ammo
 - s-weapon
