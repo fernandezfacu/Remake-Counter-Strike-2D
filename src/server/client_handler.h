@@ -16,15 +16,19 @@ private:
     std::atomic_bool keepTalking;
     std::atomic_bool isAlive;
     std::unordered_map<CommandType,
-                       std::function<void(const MessageFromClient& request, bool& isInGame)>>
+                       std::function<void(const MessageFromClient& request)>>
             managersMap;
-    ServerMonitor& serverMonitor;
-    std::string myGame;
+    ServerMonitor& server_monitor;
+    std::string username;
+    bool is_in_game;
+    std::string my_game;
 
-    void manageCommand(const MessageFromClient& msg, bool& hasEnteredGame);
-    void manageCreateGame(const MessageFromClient& msg, bool& hasEnteredGame);
-    void manageListGames(const MessageFromClient& msg, const bool& hasEnteredGame);
-    void manageJoinGame(const MessageFromClient& msg, bool& hasEnteredGame);
+    void sendLobbyResponse(const CommandType& command, const bool& success);
+    void manageCommand(const MessageFromClient& msg);
+    void manageCreateUsername(const MessageFromClient& msg);
+    void manageCreateGame(const MessageFromClient& msg);
+    void manageListGames(const MessageFromClient& msg);
+    void manageJoinGame(const MessageFromClient& msg);
     void manageEndGame();
     bool isInGame();
     MessageFromClient ReceiveMessage();
@@ -32,7 +36,7 @@ private:
     void launchGame();
 
 public:
-    ClientHandler(Socket&& socket, ServerMonitor& serverMonitor);
+    ClientHandler(Socket&& socket, ServerMonitor& server_monitor);
     void SendStatusGame(const MessageFromServer& msg);
     MessageFromClient ReceivePlay();
     void run() override;

@@ -16,7 +16,7 @@ class ClientAcceptor: public Thread {
 private:
     Socket acceptor;
     std::vector<ClientHandler*> clients;
-    ServerMonitor serverMonitor;
+    ServerMonitor server_monitor;
 
 public:
     explicit ClientAcceptor(const std::string& port);

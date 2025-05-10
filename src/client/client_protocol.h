@@ -21,9 +21,11 @@ private:
     bool isAlive;
     std::unordered_map<CommandType, std::function<void(const InternalMessage& request)>> sendersMap;
 
+    void sendCreateUsernameRequest(const InternalMessage& request);
     void sendCreateGameRequest(const InternalMessage& request);
     void sendJoinGameRequest(const InternalMessage& request);
-    void sendMakePlayGameRequest(const InternalMessage& request);
+    void sendBuyWeaponRequest(const InternalMessage& request);
+    void sendBuyWeaponAmmoRequest(const InternalMessage& request);
 
 public:
     ClientProtocol(const std::string& hostname, const std::string& port);

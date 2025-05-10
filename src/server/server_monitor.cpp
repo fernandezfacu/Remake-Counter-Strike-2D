@@ -1,5 +1,12 @@
 #include "server_monitor.h"
 
+bool ServerMonitor::CreateUsername(const std::string& username) {
+    std::unique_lock<std::mutex> lck(this->mutex);
+    auto result = this->players.insert(username);
+    return result.second;
+}
+
+
 bool ServerMonitor::CreateNewGame(const std::string& gameName, ClientHandler& client) {
     std::unique_lock<std::mutex> lck(this->mutex);
     auto result = this->gameMonitors.try_emplace(gameName, client);

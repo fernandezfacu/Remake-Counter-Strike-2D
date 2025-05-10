@@ -6,7 +6,8 @@
 
 #include "communication_ended.h"
 
-CommonProtocol::CommonProtocol(const std::string& hostname, const std::string& port): socket(hostname.c_str(), port.c_str()) {}
+CommonProtocol::CommonProtocol(const std::string& hostname, const std::string& port):
+        socket(hostname.c_str(), port.c_str()) {}
 
 CommonProtocol::CommonProtocol(Socket&& socket): socket(std::move(socket)) {}
 

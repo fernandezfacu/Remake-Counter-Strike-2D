@@ -7,18 +7,23 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket):
         CommonProtocol(std::move(socket)),
-        codeToCommands({{CODE_CREATE_GAME, CommandType::CREATE_GAME},
-                        {CODE_JOIN_GAME, CommandType::JOIN_GAME}}) {
+        codeToCommands({{CODE_CREATE_USERNAME, CommandType::CREATE_USERNAME},
+                        {CODE_CREATE_GAME, CommandType::CREATE_GAME},
+                        {CODE_JOIN_GAME, CommandType::JOIN_GAME}}),
+        commandsToCode({{CommandType::CREATE_USERNAME, CODE_CREATE_USERNAME},
+                        {CommandType::CREATE_GAME, CODE_CREATE_GAME},
+                        {CommandType::JOIN_GAME, CODE_JOIN_GAME}}),
+        codeSuccessResponse({{true, CODE_SUCCESS}, 
+                            {false, CODE_FAIL}}) {
+    commandsManagers[CommandType::CREATE_USERNAME] = [this]() { return receiveCreateUsernameRequest(); };
     commandsManagers[CommandType::CREATE_GAME] = [this]() { return receiveCreateGameRequest(); };
     commandsManagers[CommandType::JOIN_GAME] = [this]() { return receiveJoinGameRequest(); };
+    
 }
 
-void ServerProtocol::SendMessage(const MessageFromServer& msg) {
-    if (msg.haveGame) {
-        this->sendBoard(msg);
-    } else {
-        this->sendListGames(msg);
-    }
+void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
+    this->SendByte(this->commandsToCode.find(msg.commandType)->second);
+    this->SendByte(this->codeSuccessResponse.find(msg.success)->second);
 }
 
 void ServerProtocol::sendListGames(const MessageFromServer& msg) {
@@ -35,6 +40,11 @@ MessageFromClient ServerProtocol::ReceiveCommand() {
     uint8_t commandCode = this->receiveByte();
     CommandType command = this->codeToCommands.find(commandCode)->second;
     return this->commandsManagers.find(command)->second();
+}
+
+MessageFromClient ServerProtocol::receiveCreateUsernameRequest() {
+    std::string username = this->ReceiveString();
+    return MessageFromClient{CommandType::CREATE_USERNAME, username};
 }
 
 MessageFromClient ServerProtocol::receiveCreateGameRequest() {

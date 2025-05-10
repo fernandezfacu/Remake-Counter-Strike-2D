@@ -2,8 +2,7 @@
 
 #include <arpa/inet.h>
 
-#include "../common_src/board_parser.h"
-#include "../common_src/communication_ended.h"
+#include "../common/communication_ended.h"
 
 Client::Client(const std::string& hostname, const std::string& port):
         protocol(hostname, port), isAlive(true) {}
@@ -39,11 +38,7 @@ void Client::PrintMessageReceived(const std::string& message) { std::cout << mes
 ServerResponseMessage Client::ReceiveMessage() { return this->protocol.ReceiveCommand(); }
 
 void Client::updateIsAlive(const std::string& response) {
-    if (response.size() > BOARD_SIZE) {
-        this->isAlive = !(this->isFinalMessage(response, MESSAGE_WINNER) ||
-                          this->isFinalMessage(response, MESSAGE_LOSER) ||
-                          this->isFinalMessage(response, MESSAGE_TIE));
-    }
+    
 }
 
 bool Client::isFinalMessage(const std::string& response, const std::string& finalMessage) {

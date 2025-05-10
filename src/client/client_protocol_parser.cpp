@@ -1,17 +1,20 @@
 #include "client_protocol_parser.h"
 
 ClientProtocolParser::ClientProtocolParser() {
+    parsersMap[CommandType::CREATE_USERNAME] = [this](const MessageFromClient& request) {
+        return this->parseFromCreateUsername(request);
+    };
     parsersMap[CommandType::CREATE_GAME] = [this](const MessageFromClient& request) {
         return this->parseFromCreateGameRequest(request);
-    };
-    parsersMap[CommandType::LIST_GAMES] = [this](const MessageFromClient& request) {
-        return this->parseFromListGameRequest(request);
     };
     parsersMap[CommandType::JOIN_GAME] = [this](const MessageFromClient& request) {
         return this->parseFromJoinGameRequest(request);
     };
-    parsersMap[CommandType::MAKE_PLAY] = [this](const MessageFromClient& request) {
-        return this->parseFromMakePlayGameRequest(request);
+    parsersMap[CommandType::BUY_WEAPON] = [this](const MessageFromClient& request) {
+        return this->parseFromBuyWeaponRequest(request);
+    };
+    parsersMap[CommandType::BUY_AMMO] = [this](const MessageFromClient& request) {
+        return this->parseFromBuyWeaponAmmoRequest(request);
     };
 }
 
@@ -19,30 +22,27 @@ InternalMessage ClientProtocolParser::ParseMessage(const MessageFromClient& mess
     return this->parsersMap.find(message.commandType)->second(message);
 }
 
-
-InternalMessage ClientProtocolParser::parseFromCreateGameRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_CREATE_GAME, request.gameName};
+InternalMessage ClientProtocolParser::parseFromCreateUsername(const MessageFromClient& request) {
+    return InternalMessage{CODE_CREATE_USERNAME, request.s};
 }
 
-InternalMessage ClientProtocolParser::parseFromListGameRequest(const MessageFromClient& request) {
-    return InternalMessage{
-            CODE_LIST_GAMES,
-    };
+InternalMessage ClientProtocolParser::parseFromCreateGameRequest(const MessageFromClient& request) {
+    return InternalMessage{CODE_CREATE_GAME};
 }
 
 InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_JOIN_GAME, request.gameName};
+    return InternalMessage{CODE_JOIN_GAME, request.s};
 }
 
-InternalMessage ClientProtocolParser::parseFromMakePlayGameRequest(
-        const MessageFromClient& request) {
-    return InternalMessage{
-            CODE_MAKE_PLAYGAME,
-            "",
-            this->cellParser.ParseFromCell(request.cell),
-    };
+InternalMessage ClientProtocolParser::parseFromBuyWeaponRequest(const MessageFromClient& request) {
+    InternalMessage msg = InternalMessage{CODE_BUY_WEAPON};
+    msg.codeWeapon = this->weaponParser.getWeaponToByte(request.weapon);
+    return msg;
 }
 
-uint8_t ClientProtocolParser::ParseCoordinatesForSend(const std::vector<int>& coordinates) {
-    return (coordinates[INDEX_ROW] << 4) | (coordinates[INDEX_COL]);
+InternalMessage ClientProtocolParser::parseFromBuyWeaponAmmoRequest(const MessageFromClient& request) {
+    InternalMessage msg = InternalMessage{CODE_BUY_BULLETS};
+    msg.codeWeaponType = this->weaponParser.getWeaponTypeToByte(this->weaponParser.getWeaponType(request.weapon));
+    msg.bullets = request.bullets;
+    return msg;
 }
