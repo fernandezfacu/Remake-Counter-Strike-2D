@@ -18,7 +18,6 @@ private:
     std::condition_variable isTurn;
     bool gameReady;
 
-
 public:
     explicit GameMonitor(ClientHandler& client);
 

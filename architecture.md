@@ -86,3 +86,74 @@ Los mensajes que envia el server son
 - Arranca la ronda en sí
 - Cambio de lado?
 - Snapshot de la ronda en sí
+
+<phase>: 
+
+- 0x00 buy_phase
+- 0x01 round_phase
+
+<bomb>:
+
+- 0x00 not_planted
+- 0x01 planted
+- 0x02 explode
+
+<timer>: 1 byte con los segundos, dsp formateamos del lado del client
+
+1min40s de ronda
+40s desde q se planta la bomba para explotar
+
+(capaz el explode en <bomb> no hace falta, con ver el timer deberiamos hacer la animación y ya)
+
+<cod-jugadores>: 0x10
+
+<cant-jugadores>: 1 byte
+
+<jugador>:
+
+- username
+
+- pos_x
+- pos_y
+- dir_x
+- dir_y
+- pos_cros_x
+- pos_cros_y
+
+asumo que 1 byte cada uno, dir_x dir_y es adonde miras, pos_x, pos_y la ubicacion del player, pos_cros_x, pos_cros_y donde está clavada la mira (el puntero del mouse basicamente)
+
+- p-weapon
+- p-ammo
+- s-weapon
+- s-ammo
+
+idem tp1
+
+- bomb
+
+    - 0x00 false
+    - 0x01 true
+
+- shooting: 
+
+    - 0x00: false
+    - 0x01: true
+
+- w-equipped: 
+
+    - 0x00 knife
+    - 0x01 primary
+    - 0x02 secondary
+    - 0x03 bomb
+
+- health: 1 byte 
+
+<cod-balas-disparadas>: 0x20
+
+<cant-balas-disparadas>: 1 byte asumo
+
+- id bala (creo que son imagenes distintas si disparaste de una primary q de una secondary)
+- pos_x
+- pos_y
+- dir_x
+- dir_y

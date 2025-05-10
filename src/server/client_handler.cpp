@@ -9,6 +9,9 @@
 
 ClientHandler::ClientHandler(Socket&& socket, ServerMonitor& server_monitor):
         protocol(std::move(socket)), server_monitor(server_monitor) {
+    managersMap[CommandType::CREATE_USERNAME] = [this](const MessageFromClient& request) {
+        return manageCreateUsername(request);
+    };
     managersMap[CommandType::CREATE_GAME] = [this](const MessageFromClient& request) {
         return manageCreateGame(request);
     };
@@ -30,8 +33,7 @@ void ClientHandler::run() {
 }
 
 void ClientHandler::launchLobby() {
-    bool hasEnteredGame = false;
-    while (!hasEnteredGame) {
+    while (!this->isInGame()) {
         MessageFromClient msg = this->protocol.ReceiveCommand();
         this->manageCommand(msg);
     }
