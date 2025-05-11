@@ -24,8 +24,15 @@ private:
     void sendCreateUsernameRequest(const InternalMessage& request);
     void sendCreateGameRequest(const InternalMessage& request);
     void sendJoinGameRequest(const InternalMessage& request);
+    void sendSelectSkinsRequest(const InternalMessage& request);
+    void sendSelectMapRequest(const InternalMessage& request);
     void sendBuyWeaponRequest(const InternalMessage& request);
     void sendBuyWeaponAmmoRequest(const InternalMessage& request);
+    void sendAimRequest(const InternalMessage& request);
+    void sendMoveRequest(const InternalMessage& request);
+    void sendShootRequest(const InternalMessage& request); 
+    void sendPlantBombRequest(const InternalMessage& request);
+    void sendDefuseBombRequest(const InternalMessage& request);
 
 public:
     ClientProtocol(const std::string& hostname, const std::string& port);

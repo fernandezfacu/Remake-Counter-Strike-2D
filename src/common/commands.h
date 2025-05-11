@@ -4,17 +4,18 @@
 #include <string>
 
 enum CommandType {
-    CREATE_USERNAME = 0,
-    CREATE_GAME = 1,
-    JOIN_GAME = 2,
-    BUY_WEAPON = 3,
-    BUY_AMMO = 4,
-    SHOOT = 5,
-    DROP_WEAPON = 6, 
-    ROTATE = 7,
-    MOVE = 8,
-    PLANT_BOMB = 9,
-    DEFUSE_BOMB = 10
+    CREATE_USERNAME,
+    CREATE_GAME,
+    JOIN_GAME,
+    SELECT_SKINS,
+    SELECT_MAP,
+    BUY_WEAPON,
+    BUY_AMMO,
+    AIM,
+    MOVE,
+    SHOOT,
+    PLANT_BOMB,
+    DEFUSE_BOMB
 };
 
 #endif

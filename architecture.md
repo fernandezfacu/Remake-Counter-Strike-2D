@@ -12,7 +12,7 @@ Puede enviar todos estos requests:
 
 - Crear partida
 
-    0x02 
+    0x02 <size-players>
 
 - Unirse partida
 
@@ -20,36 +20,77 @@ Puede enviar todos estos requests:
 
     siendo <length-match> un numero de dos bytes big endian
 
-LOBBY DEBERIA ELEGIR SKINS DE AMBOS LADOS
-LOBBY DEBERIA TENER BOTON LISTO
-LOBBY DEBERIA TENER ELEGIR MAPA
-LOBBY DEBERIA DETERMINAR CUANTOS JUGADORES VAN A SER EN LA PARTIDA
+UNA VEZ UNIDO:
+
+- Elegir skins
+
+    0x04 <skin-id-tt>: 1 byte <skin-id-ct>: 1 byte
+
+    // podria hacer algo similar a lo del tp2 del OR para achicar esto un poco
+
+- Elegir mapa
+
+    0x05 <map-id>: 1 byte
+
+- LOBBY DEBERIA ELEGIR SKINS DE AMBOS LADOS
+- LOBBY DEBERIA TENER BOTON LISTO
+- LOBBY DEBERIA TENER ELEGIR MAPA
+- LOBBY DEBERIA DETERMINAR CUANTOS JUGADORES VAN A SER EN LA PARTIDA
 
 - Comprar arma
 
-    0x04 <weapon-code>
+    0x06 <weapon-code>
 
     siendo <weapon-code> un byte 
 
 - Comprar balas
 
-    0x05 <type-weapon> <count>
+    0x07 <type-weapon> <count>
 
     siendo <type-weapon> un byte 
 
     0x01: arma primaria
+
     0x02: arma secundaria
 
     <count>: un numero big endian
-- Rotar
+
+- Apuntar (y rotar):
+
+    0x08 <position-crosshair>
+
 - Moverse
 
+    0x09 <direccion>:
+
+    - 0x01: arriba
+    - 0x02: izquierda
+    - 0x03: abajo
+    - 0x04: derecha
 
 - Disparar
-- Apuntar?
+
+    0x10 (con la dirección ya debería saber adonde va)
+
 - Cambiar arma
+
+    0x11 <weapon-id>:
+
+    0x00 knife
+    
+    0x01 primary
+
+    0x02 secondary
+
+    0x03 bomb
+
 - Plantar la bomba
+
+    0x12 // ACA CAPAZ DEBERIA SER IGUAL Q SHOOTEAR CUANDO TENES SELECCIONADA LA BOMBA
+
 - Defusear la bomba
+
+    0x13 // ACÁ ESTÁ BIEN Q SEA OTRA, EN EL CS2 Y CSGO USAS E PARA DEFUSEAR
 
 #
 

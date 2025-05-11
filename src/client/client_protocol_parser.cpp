@@ -36,13 +36,13 @@ InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFrom
 
 InternalMessage ClientProtocolParser::parseFromBuyWeaponRequest(const MessageFromClient& request) {
     InternalMessage msg = InternalMessage{CODE_BUY_WEAPON};
-    msg.codeWeapon = this->weaponParser.getWeaponToByte(request.weapon);
+    msg.code_weapon = this->weaponParser.getWeaponToByte(request.weapon);
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromBuyWeaponAmmoRequest(const MessageFromClient& request) {
     InternalMessage msg = InternalMessage{CODE_BUY_BULLETS};
-    msg.codeWeaponType = this->weaponParser.getWeaponTypeToByte(this->weaponParser.getWeaponType(request.weapon));
+    msg.code_weapon_type = this->weaponParser.getWeaponTypeToByte(this->weaponParser.getWeaponType(request.weapon));
     msg.bullets = request.bullets;
     return msg;
 }
