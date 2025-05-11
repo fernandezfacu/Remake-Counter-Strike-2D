@@ -43,6 +43,9 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
     sendersMap[CommandType::SHOOT] = [this](const InternalMessage& request) {
         return this->sendShootRequest(request);
     };
+    sendersMap[CommandType::CHANGE_WEAPON] = [this](const InternalMessage& request) {
+        return this->sendChangeWeaponRequest(request); 
+    };
     sendersMap[CommandType::PLANT_BOMB] = [this](const InternalMessage& request) {
         return this->sendPlantBombRequest(request);
     };
@@ -108,6 +111,9 @@ void ClientProtocol::sendShootRequest(const InternalMessage& request) {
     
 }
 
+void ClientProtocol::sendChangeWeaponRequest(const InternalMessage& request) {
+    this->SendByte(request.code_weapon_type);
+}
 
 void ClientProtocol::sendPlantBombRequest(const InternalMessage& request) {
     

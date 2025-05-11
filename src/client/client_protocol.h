@@ -30,7 +30,8 @@ private:
     void sendBuyWeaponAmmoRequest(const InternalMessage& request);
     void sendAimRequest(const InternalMessage& request);
     void sendMoveRequest(const InternalMessage& request);
-    void sendShootRequest(const InternalMessage& request); 
+    void sendShootRequest(const InternalMessage& request);
+    void sendChangeWeaponRequest(const InternalMessage& request); 
     void sendPlantBombRequest(const InternalMessage& request);
     void sendDefuseBombRequest(const InternalMessage& request);
 

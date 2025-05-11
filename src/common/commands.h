@@ -14,6 +14,7 @@ enum CommandType {
     AIM,
     MOVE,
     SHOOT,
+    CHANGE_WEAPON,
     PLANT_BOMB,
     DEFUSE_BOMB
 };
