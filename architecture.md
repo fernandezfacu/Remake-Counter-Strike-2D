@@ -6,62 +6,57 @@ Puede enviar todos estos requests:
 
 - Crear nombre de usuario
 
-    0x01 <length-username> <username>
+    0x01 _length-username_ _username_
     
-    siendo <length-username> un numero de dos bytes big endian
+    siendo _length-username_ un numero de dos bytes big endian
 
 - Crear partida
 
-    0x02 <size-players>
+    0x02 _amount-of-players_
 
 - Unirse partida
 
-    0x03 <length-match> <match-id>
+    0x03 _length-match_ _match-id_
 
-    siendo <length-match> un numero de dos bytes big endian
+    siendo _length-match_ un numero de dos bytes big endian
 
 UNA VEZ UNIDO:
 
 - Elegir skins
 
-    0x04 <skin-id-tt>: 1 byte <skin-id-ct>: 1 byte
+    0x04 _skin-id-tt_: 1 byte _skin-id-ct_: 1 byte
 
     // podria hacer algo similar a lo del tp2 del OR para achicar esto un poco
 
 - Elegir mapa
 
-    0x05 <map-id>: 1 byte
-
-- LOBBY DEBERIA ELEGIR SKINS DE AMBOS LADOS
-- LOBBY DEBERIA TENER BOTON LISTO
-- LOBBY DEBERIA TENER ELEGIR MAPA
-- LOBBY DEBERIA DETERMINAR CUANTOS JUGADORES VAN A SER EN LA PARTIDA
+    0x05 _map-id_: 1 byte
 
 - Comprar arma
 
-    0x06 <weapon-code>
+    0x06 _weapon-code_
 
-    siendo <weapon-code> un byte 
+    siendo _weapon-code_ un byte 
 
 - Comprar balas
 
-    0x07 <type-weapon> <count>
+    0x07 _type-weapon_ _count_
 
-    siendo <type-weapon> un byte 
+    siendo _type-weapon_ un byte 
 
     0x01: arma primaria
 
     0x02: arma secundaria
 
-    <count>: un numero big endian
+    _count_: un numero big endian
 
 - Apuntar (y rotar):
 
-    0x08 <position-crosshair>
+    0x08 _position-crosshair_
 
 - Moverse
 
-    0x09 <direccion>:
+    0x09 _direction_:
 
     - 0x01: arriba
     - 0x02: izquierda
@@ -74,7 +69,7 @@ UNA VEZ UNIDO:
 
 - Cambiar arma
 
-    0x11 <weapon-id>:
+    0x11 _weapon-id_:
 
     0x00 knife
     
@@ -86,7 +81,9 @@ UNA VEZ UNIDO:
 
 - Plantar la bomba
 
-    0x12 // ACA CAPAZ DEBERIA SER IGUAL Q SHOOTEAR CUANDO TENES SELECCIONADA LA BOMBA
+    0x12 
+    
+    // ACA CAPAZ DEBERIA SER IGUAL Q SHOOTEAR CUANDO TENES SELECCIONADA LA BOMBA. 
 
 - Defusear la bomba
 
@@ -119,53 +116,42 @@ Los mensajes que envia el server son
 - No te uniste exitosamente a una partida
     0x03 0x00
 - Envio equipamiento
-    0x04 <money> <knife> <primary-weapon-code> <primary-weapon-bullets> <secondary-weapon-code> <secondary-weapon-bullets>
+    0x04 _money_ _knife_ _primary-weapon-code_ _primary-weapon-bullets_ _secondary-weapon-code_ _secondary-weapon-bullets_
 
-    - <money>: numero dos bytes big endian
-    - <knife>: 0x01 si lo tiene equipado, 0x00 si no (nunca debería pasar)
-    - <primary-weapon-code>: un byte
-    - <primary-weapon-bullets>: dos bytes big endian
-    - <secondary-weapon-code>: un byte
-    - <secondary-weapon-bullets>: dos bytes big endian
+    - _money_: numero dos bytes big endian
+    - _knife_: 0x01 si lo tiene equipado, 0x00 si no (nunca debería pasar)
+    - _primary-weapon-code_: un byte
+    - _primary-weapon-bullets_: dos bytes big endian
+    - _secondary-weapon-code_: un byte
+    - _secondary-weapon-bullets_: dos bytes big endian
 
-- Arranca la fase de compra?
-- Arranca la ronda en sí 
-
-[Entiendo que con lo de <phase> ya se maneja ¿]
-
-- Cambio de lado?
-
-[SE MANEJA INTERNAMENTE¿]
-
-- Snapshot de la ronda en sí
-
-<phase>: 
+_phase_: 
 
 - 0x00 buy_phase
 - 0x01 round_phase
 
-<round>: 
+_round_: 
 
 - 1 byte con el numero de ronda (10 maximo)
 
-<bomb>:
+_bomb_:
 
 - 0x00 not_planted
 - 0x01 planted
 - 0x02 explode
 
-<timer>: 1 byte con los segundos, dsp formateamos del lado del client
+_timer_: 1 byte con los segundos, dsp formateamos del lado del client
 
 1min40s de ronda
 40s desde q se planta la bomba para explotar
 
-(capaz el explode en <bomb> no hace falta, con ver el timer deberiamos hacer la animación y ya)
+(capaz el explode en _bomb_ no hace falta, con ver el timer deberiamos hacer la animación y ya)
 
-<cod-jugadores>: 0x10
+_cod-jugadores_: 0x10
 
-<cant-jugadores>: 1 byte
+_cant-jugadores_: 1 byte
 
-<jugador>:
+_jugador_:
 
 - username
 
@@ -205,9 +191,9 @@ idem tp1
 
 - health: 1 byte 
 
-<cod-balas-disparadas>: 0x20
+_cod-balas-disparadas_: 0x20
 
-<cant-balas-disparadas>: 1 byte asumo
+_cant-balas-disparadas_: 1 byte asumo
 
 - id bala (creo que son imagenes distintas si disparaste de una primary q de una secondary)
 - pos_x
