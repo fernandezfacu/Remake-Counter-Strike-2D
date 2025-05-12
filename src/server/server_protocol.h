@@ -11,8 +11,7 @@
 #include "../common/common_protocol.h"
 #include "../common/message.h"
 #include "../common/socket.h"
-
-#include "server_protocol_parser.h"
+#include "../common/codes_parser.h"
 
 #define CODE_SUCCESS 0x01
 #define CODE_FAIL 0x00
@@ -21,7 +20,6 @@ class ServerProtocol: public CommonProtocol, public CodesParser {
 private:
     std::unordered_map<bool, uint8_t> codeSuccessResponse;
     std::unordered_map<CommandType, std::function<MessageFromClient(const CommandType& command)>> commandsManagers;
-    ServerProtocolParser protocolParser;
 
     MessageFromClient receiveCreateUsernameRequest(const CommandType& command);
     MessageFromClient receiveCreateGameRequest(const CommandType& command);
@@ -38,7 +36,8 @@ private:
     MessageFromClient receiveDefuseBombRequest(const CommandType& command);
 public:
     explicit ServerProtocol(Socket&& socket);
-    void SendLobbyMessage(const ServerResponseLobby& msg);    
+    void SendLobbyMessage(const ServerResponseLobby& msg);
+    void SendStartGame(const ServerResponseLobby& msg);
     void SendMessage(const MessageFromServer& msg);
     MessageFromClient ReceiveCommand();
     void kill();

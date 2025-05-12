@@ -30,6 +30,10 @@ void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
     this->SendByte(this->codeSuccessResponse.find(msg.success)->second);
 }
 
+void ServerProtocol::SendStartGame(const ServerResponseLobby& msg) {
+    this->SendByte(this->commandsToCode.find(msg.commandType)->second);
+}
+
 MessageFromClient ServerProtocol::ReceiveCommand() {
     uint8_t commandCode = this->receiveByte();
     CommandType command = this->codeToCommands.find(commandCode)->second;

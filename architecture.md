@@ -130,6 +130,9 @@ Los mensajes que envia el server son
 
 - Cuando entraron todos los pjs que quiero deberia enviar un msj de partida es ready para que el cliente se prepare y arme las queues etc.
 
+- Empezó la partida
+    - 0x30
+
 - Envio equipamiento
     0x04 _money_ _knife_ _primary-weapon-code_ _primary-weapon-bullets_ _secondary-weapon-code_ _secondary-weapon-bullets_
 

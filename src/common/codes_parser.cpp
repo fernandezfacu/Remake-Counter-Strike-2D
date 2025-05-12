@@ -1,4 +1,4 @@
-#include "common_protocol_parser.h"
+#include "codes_parser.h"
 
 CodesParser::CodesParser() :         
         codeToCommands({
@@ -14,7 +14,8 @@ CodesParser::CodesParser() :
             {CODE_SHOOT, CommandType::SHOOT},
             {CODE_CHANGE_WEAPON, CommandType::CHANGE_WEAPON},
             {CODE_PLANT_BOMB, CommandType::PLANT_BOMB},
-            {CODE_DEFUSE_BOMB, CommandType::DEFUSE_BOMB}
+            {CODE_DEFUSE_BOMB, CommandType::DEFUSE_BOMB},
+            {CODE_GAME_STARTED, CommandType::GAME_STARTED}
         }),
         commandsToCode({
             {CommandType::CREATE_USERNAME, CODE_CREATE_USERNAME},
@@ -29,5 +30,6 @@ CodesParser::CodesParser() :
             {CommandType::SHOOT, CODE_SHOOT},
             {CommandType::CHANGE_WEAPON, CODE_CHANGE_WEAPON},
             {CommandType::PLANT_BOMB, CODE_PLANT_BOMB},
-            {CommandType::DEFUSE_BOMB, CODE_DEFUSE_BOMB}
+            {CommandType::DEFUSE_BOMB, CODE_DEFUSE_BOMB},
+            {CommandType::GAME_STARTED, CODE_GAME_STARTED}
         }) {}

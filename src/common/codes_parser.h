@@ -18,6 +18,7 @@
 #define CODE_CHANGE_WEAPON 0x11
 #define CODE_PLANT_BOMB 0x12
 #define CODE_DEFUSE_BOMB 0x13
+#define CODE_GAME_STARTED 0x30
 
 class CodesParser {
     protected:

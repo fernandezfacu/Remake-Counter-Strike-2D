@@ -75,6 +75,7 @@ void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
         this->is_in_game = true;
         this->sendLobbyResponse(msg.commandType, true);
         this->server_monitor.GetGameMonitor(std::get<1>(response)).WaitPlayers();
+        this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         return;
     }
@@ -88,6 +89,7 @@ void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
         this->my_game = msg.s;
         this->sendLobbyResponse(msg.commandType, true);
         this->server_monitor.GetGameMonitor(msg.s).WaitPlayers();
+        this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         return;
     }
