@@ -14,17 +14,11 @@
 
 #include "server_protocol_parser.h"
 
-#define CODE_CREATE_USERNAME 0x01
-#define CODE_CREATE_GAME 0x02
-#define CODE_JOIN_GAME 0x03
-#define CODE_MAKE_PLAY 0x04
 #define CODE_SUCCESS 0x01
 #define CODE_FAIL 0x00
 
 class ServerProtocol: public CommonProtocol {
 private:
-    std::unordered_map<uint8_t, CommandType> codeToCommands;
-    std::unordered_map<CommandType, uint8_t> commandsToCode;
     std::unordered_map<bool, uint8_t> codeSuccessResponse;
     std::unordered_map<CommandType, std::function<MessageFromClient()>> commandsManagers;
     ServerProtocolParser protocolParser;

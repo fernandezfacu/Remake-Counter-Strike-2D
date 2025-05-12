@@ -2,6 +2,7 @@
 
 - [ ] Terminar del lado del client los manejadores
 - [ ] Agregar manejador y parseador del lado del server
+    - los maps que tengo ahora en commonProtocol deberian estar capaz en un commonParser para reutilzar esos mapas
 - [ ] Agregar queues:
 
     - server sender: snapshots

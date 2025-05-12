@@ -10,20 +10,6 @@
 #include "../common/message.h"
 #include "../common/weaponParser.h"
 
-#define CODE_CREATE_USERNAME 0x01
-#define CODE_CREATE_GAME 0x02
-#define CODE_JOIN_GAME 0x03
-#define CODE_SELECT_SKINS 0x04
-#define CODE_SELECT_MAP 0x05
-#define CODE_BUY_WEAPON 0x06
-#define CODE_BUY_BULLETS 0x07
-#define CODE_AIM 0x08
-#define CODE_MOVE 0x09
-#define CODE_SHOOT 0x10
-#define CODE_CHANGE_WEAPON 0x11
-#define CODE_PLANT_BOMB 0x12
-#define CODE_DEFUSE_BOMB 0x13
-
 class ClientProtocolParser {
 private:
     WeaponParser weaponParser;

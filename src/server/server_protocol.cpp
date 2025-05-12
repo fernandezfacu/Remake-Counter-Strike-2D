@@ -7,12 +7,6 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket):
         CommonProtocol(std::move(socket)),
-        codeToCommands({{CODE_CREATE_USERNAME, CommandType::CREATE_USERNAME},
-                        {CODE_CREATE_GAME, CommandType::CREATE_GAME},
-                        {CODE_JOIN_GAME, CommandType::JOIN_GAME}}),
-        commandsToCode({{CommandType::CREATE_USERNAME, CODE_CREATE_USERNAME},
-                        {CommandType::CREATE_GAME, CODE_CREATE_GAME},
-                        {CommandType::JOIN_GAME, CODE_JOIN_GAME}}),
         codeSuccessResponse({{true, CODE_SUCCESS}, 
                             {false, CODE_FAIL}}) {
     commandsManagers[CommandType::CREATE_USERNAME] = [this]() { return receiveCreateUsernameRequest(); };
