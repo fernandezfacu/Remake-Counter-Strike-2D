@@ -1,33 +1,27 @@
 #include "server_monitor.h"
 
+ServerMonitor::ServerMonitor() {
+    this->game_id = 0;
+}
+
 bool ServerMonitor::CreateUsername(const std::string& username) {
     std::unique_lock<std::mutex> lck(this->mutex);
     auto result = this->players.insert(username);
     return result.second;
 }
 
-
-bool ServerMonitor::CreateNewGame(const std::string& gameName, ClientHandler& client) {
+bool ServerMonitor::CreateNewGame(ClientHandler& client) {
     std::unique_lock<std::mutex> lck(this->mutex);
-    auto result = this->gameMonitors.try_emplace(gameName, client);
+    auto result = this->gameMonitors.try_emplace(std::to_string(this->game_id), client.GetUsername());
+    // despues acá utilizar UUID, tengo que buscar alguna library que lo haga
     return result.second;
-}
-
-std::vector<std::string> ServerMonitor::ListGames() {
-    std::unique_lock<std::mutex> lck(this->mutex);
-    std::vector<std::string> games;
-    for (std::map<std::string, GameMonitor>::iterator it = this->gameMonitors.begin();
-         it != this->gameMonitors.end(); ++it) {
-        games.push_back(it->first);
-    }
-    return games;
 }
 
 bool ServerMonitor::JoinGame(const std::string& gameName, ClientHandler& client) {
     std::unique_lock<std::mutex> lck(this->mutex);
     auto it = this->gameMonitors.find(gameName);
     if (it != this->gameMonitors.end()) {
-        return it->second.ConnectSecondPlayer(client);
+        return it->second.AddPlayer(client.GetUsername());
     } else {
         return false;
     }

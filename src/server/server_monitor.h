@@ -9,6 +9,7 @@
 #include <set>
 
 #include "game_monitor.h"
+#include "client_handler.h"
 
 class ServerMonitor {
 private:
@@ -16,11 +17,12 @@ private:
     std::set<std::string> players;
     std::map<std::string, std::string> players_in_game;
     std::map<std::string, GameMonitor> gameMonitors;
+    int game_id;
 
 public:
+    ServerMonitor();
     bool CreateUsername(const std::string& username);
-    bool CreateNewGame(const std::string& gameName, ClientHandler& client);
-    std::vector<std::string> ListGames();
+    bool CreateNewGame(ClientHandler& client);
     bool JoinGame(const std::string& gameName, ClientHandler& client);
     void MakePlayGame(const std::string& gameName, ClientHandler& client);
     GameMonitor& GetGameMonitor(const std::string& gameName);

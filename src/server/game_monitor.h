@@ -5,24 +5,29 @@
 #include <condition_variable>
 #include <mutex>
 #include <vector>
+#include <set>
 
 #include "server_protocol.h"
+
+#define PLAYERS_TT 2
+#define PLAYERS_CT 2 // aca realmente deberia leer del yaml para determinar esto
 
 class ClientHandler;
 
 class GameMonitor {
 private:
     std::mutex mutex;
-    std::vector<ClientHandler*> players;
+    std::set<std::string> tts;
+    std::set<std::string> cts;
     std::condition_variable gameIsReady;
-    std::condition_variable isTurn;
     bool gameReady;
 
-public:
-    explicit GameMonitor(ClientHandler& client);
+    void updateGameIsReady();
 
-    bool ConnectSecondPlayer(ClientHandler& client);
-    void WaitSecondPlayer();
+public:
+    explicit GameMonitor(const std::string& creatorUsername);
+    bool AddPlayer(const std::string& playerUsername);
+    void WaitPlayers();
     void MakePlayGame(ClientHandler& client);
 
     bool isFinished();

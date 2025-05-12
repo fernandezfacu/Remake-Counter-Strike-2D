@@ -38,6 +38,7 @@ private:
 public:
     ClientHandler(Socket&& socket, ServerMonitor& server_monitor);
     void SendStatusGame(const MessageFromServer& msg);
+    std::string GetUsername();
     MessageFromClient ReceivePlay();
     void run() override;
     void kill();

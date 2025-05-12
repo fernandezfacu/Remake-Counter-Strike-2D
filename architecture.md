@@ -127,6 +127,9 @@ Los mensajes que envia el server son
     0x03 0x01
 - No te uniste exitosamente a una partida
     0x03 0x00
+
+- Cuando entraron todos los pjs que quiero deberia enviar un msj de partida es ready para que el cliente se prepare y arme las queues etc.
+
 - Envio equipamiento
     0x04 _money_ _knife_ _primary-weapon-code_ _primary-weapon-bullets_ _secondary-weapon-code_ _secondary-weapon-bullets_
 
