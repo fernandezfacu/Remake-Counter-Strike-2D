@@ -10,12 +10,13 @@ bool ServerMonitor::CreateUsername(const std::string& username) {
     return result.second;
 }
 
-bool ServerMonitor::CreateNewGame(ClientHandler& client) {
+std::tuple<bool, std::string> ServerMonitor::CreateNewGame(ClientHandler& client) {
     std::unique_lock<std::mutex> lck(this->mutex);
-    auto result = this->gameMonitors.try_emplace(std::to_string(this->game_id), client.GetUsername());
+    std::string game_name = std::to_string(this->game_id);
+    auto result = this->gameMonitors.try_emplace(game_name, client.GetUsername());
     // despues acá utilizar UUID, tengo que buscar alguna library que lo haga
     this->game_id++;
-    return result.second;
+    return std::make_tuple(result.second, game_name);
 }
 
 bool ServerMonitor::JoinGame(const std::string& gameName, ClientHandler& client) {

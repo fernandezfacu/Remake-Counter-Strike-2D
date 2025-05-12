@@ -69,12 +69,16 @@ void ClientHandler::manageCreateUsername(const MessageFromClient& msg) {
 }
 
 void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
-    bool success = this->server_monitor.CreateNewGame(*this);
-    if (!this->isInGame() && success) {
+    auto response = this->server_monitor.CreateNewGame( *this);
+    if (!this->isInGame() && std::get<0>(response)) {
         this->my_game = msg.s;
         this->is_in_game = true;
+        this->sendLobbyResponse(msg.commandType, true);
+        this->server_monitor.GetGameMonitor(std::get<1>(response)).WaitPlayers();
+        // enviar mensaje empezó partida
+        return;
     }
-    this->sendLobbyResponse(msg.commandType, success);
+    this->sendLobbyResponse(msg.commandType, false);
 }
 
 void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
@@ -82,8 +86,12 @@ void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
     if (!this->isInGame() && success) {
         this->is_in_game = true;
         this->my_game = msg.s;
+        this->sendLobbyResponse(msg.commandType, true);
+        this->server_monitor.GetGameMonitor(msg.s).WaitPlayers();
+        // enviar mensaje empezó partida
+        return;
     }
-    this->sendLobbyResponse(msg.commandType, success);
+    this->sendLobbyResponse(msg.commandType, false);
 }
 
 std::string ClientHandler::GetUsername() {

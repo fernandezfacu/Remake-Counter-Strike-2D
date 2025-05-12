@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <tuple>
 
 #include "game_monitor.h"
 #include "client_handler.h"
@@ -22,7 +23,7 @@ private:
 public:
     ServerMonitor();
     bool CreateUsername(const std::string& username);
-    bool CreateNewGame(ClientHandler& client);
+    std::tuple<bool, std::string> CreateNewGame(ClientHandler& client);
     bool JoinGame(const std::string& gameName, ClientHandler& client);
     void MakePlayGame(const std::string& gameName, ClientHandler& client);
     GameMonitor& GetGameMonitor(const std::string& gameName);
