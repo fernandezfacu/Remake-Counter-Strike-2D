@@ -11,7 +11,7 @@
 #include "../common/weaponParser.h"
 #include "../common/common_protocol_parser.h"
 
-class ClientProtocolParser : public CommonProtocolParser {
+class ClientProtocolParser : public CodesParser {
 private:
     WeaponParser weaponParser;
     std::unordered_map<CommandType,

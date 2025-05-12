@@ -11,7 +11,7 @@
 #define LIST_GAMES_TITLE "Partidas:\n"
 #define MARKER_LIST_ITEM " - "
 
-class ServerProtocolParser : public CommonProtocolParser {
+class ServerProtocolParser : public CodesParser {
 public:
 
 };

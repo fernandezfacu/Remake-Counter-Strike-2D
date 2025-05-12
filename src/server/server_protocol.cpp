@@ -13,7 +13,16 @@ ServerProtocol::ServerProtocol(Socket&& socket):
     commandsManagers[CommandType::CREATE_USERNAME] = [this](const CommandType& command) { return receiveCreateUsernameRequest(command); };
     commandsManagers[CommandType::CREATE_GAME] = [this](const CommandType& command) { return receiveCreateGameRequest(command); };
     commandsManagers[CommandType::JOIN_GAME] = [this](const CommandType& command) { return receiveJoinGameRequest(command); };
-    
+    commandsManagers[CommandType::SELECT_SKINS] = [this](const CommandType& command) { return receiveSelectSkinsRequest(command); };
+    commandsManagers[CommandType::SELECT_MAP] = [this](const CommandType& command) { return receiveSelectMapRequest(command); };
+    commandsManagers[CommandType::BUY_WEAPON] = [this](const CommandType& command) { return receiveBuyWeaponRequest(command); };
+    commandsManagers[CommandType::BUY_AMMO] = [this](const CommandType& command) { return receiveBuyWeaponAmmoRequest(command); };
+    commandsManagers[CommandType::AIM] = [this](const CommandType& command) { return receiveAimRequest(command); };
+    commandsManagers[CommandType::MOVE] = [this](const CommandType& command) { return receiveMoveRequest(command); };
+    commandsManagers[CommandType::SHOOT] = [this](const CommandType& command) { return receiveShootRequest(command); };
+    commandsManagers[CommandType::CHANGE_WEAPON] = [this](const CommandType& command) { return receiveChangeWeaponRequest(command); };
+    commandsManagers[CommandType::PLANT_BOMB] = [this](const CommandType& command) { return receivePlantBombRequest(command); };
+    commandsManagers[CommandType::DEFUSE_BOMB] = [this](const CommandType& command) { return receiveDefuseBombRequest(command); };
 }
 
 void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {

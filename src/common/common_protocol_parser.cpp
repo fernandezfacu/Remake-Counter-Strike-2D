@@ -1,6 +1,6 @@
 #include "common_protocol_parser.h"
 
-CommonProtocolParser::CommonProtocolParser() :         
+CodesParser::CodesParser() :         
         codeToCommands({
             {CODE_CREATE_USERNAME, CommandType::CREATE_USERNAME},
             {CODE_CREATE_GAME, CommandType::CREATE_GAME},

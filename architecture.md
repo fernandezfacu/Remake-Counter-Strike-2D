@@ -205,9 +205,9 @@ idem tp1
 
 _cod-balas-disparadas_: 0x20
 
-_cant-balas-disparadas_: 1 byte asumo
+_cant-balas-disparadas_: 1 byte asumo // innecesario tmb, recorro vector de players y me fijo quienes disparan. tengo la dirección del chabon tmb
 
-- id bala (creo que son imagenes distintas si disparaste de una primary q de una secondary)
+- id bala (creo que son imagenes distintas si disparaste de una primary q de una secondary) // es innecesario en principio
 - pos_x
 - pos_y
 - dir_x

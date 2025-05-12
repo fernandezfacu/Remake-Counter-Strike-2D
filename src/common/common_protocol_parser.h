@@ -19,12 +19,12 @@
 #define CODE_PLANT_BOMB 0x12
 #define CODE_DEFUSE_BOMB 0x13
 
-class CommonProtocolParser {
+class CodesParser {
     protected:
         std::unordered_map<uint8_t, CommandType> codeToCommands;
         std::unordered_map<CommandType, uint8_t> commandsToCode;
     public:
-        CommonProtocolParser();
+        CodesParser();
 };
 
 #endif

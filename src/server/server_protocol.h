@@ -17,7 +17,7 @@
 #define CODE_SUCCESS 0x01
 #define CODE_FAIL 0x00
 
-class ServerProtocol: public CommonProtocol, public CommonProtocolParser {
+class ServerProtocol: public CommonProtocol, public CodesParser {
 private:
     std::unordered_map<bool, uint8_t> codeSuccessResponse;
     std::unordered_map<CommandType, std::function<MessageFromClient(const CommandType& command)>> commandsManagers;
