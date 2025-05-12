@@ -48,7 +48,9 @@ InternalMessage ClientProtocolParser::parseFromCreateUsernameRequest(const Messa
 }
 
 InternalMessage ClientProtocolParser::parseFromCreateGameRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_CREATE_GAME};
+    InternalMessage msg = InternalMessage{CODE_CREATE_GAME};
+    msg.size_players = request.size_players;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFromClient& request) {
@@ -56,7 +58,10 @@ InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFrom
 }
 
 InternalMessage ClientProtocolParser::parseFromSelectSkinsRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_SELECT_SKINS};
+    InternalMessage msg = InternalMessage{CODE_SELECT_SKINS};
+    msg.skin_id_tt = request.tt_skin;
+    msg.skin_id_ct = request.ct_skin;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromSelectMapRequest(const MessageFromClient& request) {
@@ -77,11 +82,16 @@ InternalMessage ClientProtocolParser::parseFromBuyWeaponAmmoRequest(const Messag
 }
 
 InternalMessage ClientProtocolParser::parseFromAimRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_AIM};
+    InternalMessage msg = InternalMessage{CODE_AIM};
+    msg.pos_x = request.pos_x;
+    msg.pos_y = request.pos_y;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromMoveRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_MOVE};
+    InternalMessage msg = InternalMessage{CODE_MOVE};
+    msg.movement = request.movement;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromShootRequest(const MessageFromClient& request) {
@@ -89,7 +99,9 @@ InternalMessage ClientProtocolParser::parseFromShootRequest(const MessageFromCli
 }
 
 InternalMessage ClientProtocolParser::parseFromChangeWeaponRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_CHANGE_WEAPON};
+    InternalMessage msg = InternalMessage{CODE_CHANGE_WEAPON};
+    msg.code_weapon_type = request.weaponType;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromPlantBombRequest(const MessageFromClient& request) {

@@ -72,7 +72,7 @@ void ClientProtocol::sendCreateUsernameRequest(const InternalMessage& request) {
 }
 
 void ClientProtocol::sendCreateGameRequest(const InternalMessage& request) {
-    
+    this->SendByte(request.size_players);
 }
 
 void ClientProtocol::sendJoinGameRequest(const InternalMessage& request) {
