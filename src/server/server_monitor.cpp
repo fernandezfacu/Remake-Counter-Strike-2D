@@ -14,6 +14,7 @@ bool ServerMonitor::CreateNewGame(ClientHandler& client) {
     std::unique_lock<std::mutex> lck(this->mutex);
     auto result = this->gameMonitors.try_emplace(std::to_string(this->game_id), client.GetUsername());
     // despues acá utilizar UUID, tengo que buscar alguna library que lo haga
+    this->game_id++;
     return result.second;
 }
 
