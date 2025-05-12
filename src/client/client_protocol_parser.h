@@ -9,8 +9,9 @@
 #include "../common/commands.h"
 #include "../common/message.h"
 #include "../common/weaponParser.h"
+#include "../common/common_protocol_parser.h"
 
-class ClientProtocolParser {
+class ClientProtocolParser : public CommonProtocolParser {
 private:
     WeaponParser weaponParser;
     std::unordered_map<CommandType,
@@ -30,6 +31,8 @@ private:
     InternalMessage parseFromChangeWeaponRequest(const MessageFromClient& request);
     InternalMessage parseFromPlantBombRequest(const MessageFromClient& request);
     InternalMessage parseFromDefuseBombRequest(const MessageFromClient& request);
+
+    InternalMessage getInternalMessageWCode(const MessageFromClient& request);
 
 public:
     ClientProtocolParser();

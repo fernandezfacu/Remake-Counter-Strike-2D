@@ -6,15 +6,14 @@
 #include <string>
 #include <vector>
 
+#include "../common/common_protocol_parser.h"
 #include "../common/message.h"
 #define LIST_GAMES_TITLE "Partidas:\n"
 #define MARKER_LIST_ITEM " - "
 
-class ServerProtocolParser {
+class ServerProtocolParser : public CommonProtocolParser {
 public:
-    std::vector<uint8_t> ParseByteToRowAndCol(const uint8_t& byte);
-    std::string ParseListToString(const std::vector<std::string>& listGames);
-    std::string ParseBoardResponse(const MessageFromServer& msg);
+
 };
 
 #endif

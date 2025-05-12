@@ -44,70 +44,78 @@ InternalMessage ClientProtocolParser::ParseMessage(const MessageFromClient& mess
 }
 
 InternalMessage ClientProtocolParser::parseFromCreateUsernameRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_CREATE_USERNAME, request.s};
+    InternalMessage msg = this->getInternalMessageWCode(request);
+    msg.s = request.s;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromCreateGameRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_CREATE_GAME};
+    InternalMessage msg = this->getInternalMessageWCode(request);
     msg.size_players = request.size_players;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_JOIN_GAME, request.s};
+    InternalMessage msg = this->getInternalMessageWCode(request);
+    msg.s = request.s;
+    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromSelectSkinsRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_SELECT_SKINS};
-    msg.skin_id_tt = request.tt_skin;
-    msg.skin_id_ct = request.ct_skin;
+    InternalMessage msg = this->getInternalMessageWCode(request);
+    msg.skin_id_tt = request.tt_skin + 1;
+    msg.skin_id_ct = request.ct_skin + 1;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromSelectMapRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_SELECT_MAP};
+    return this->getInternalMessageWCode(request);
 }
 
 InternalMessage ClientProtocolParser::parseFromBuyWeaponRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_BUY_WEAPON};
+    InternalMessage msg = this->getInternalMessageWCode(request);
     msg.code_weapon = this->weaponParser.getWeaponToByte(request.weapon);
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromBuyWeaponAmmoRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_BUY_BULLETS};
+    InternalMessage msg = this->getInternalMessageWCode(request);
     msg.code_weapon_type = this->weaponParser.getWeaponTypeToByte(this->weaponParser.getWeaponType(request.weapon));
     msg.bullets = request.bullets;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromAimRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_AIM};
+    InternalMessage msg = this->getInternalMessageWCode(request);
     msg.pos_x = request.pos_x;
     msg.pos_y = request.pos_y;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromMoveRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_MOVE};
-    msg.movement = request.movement;
+    InternalMessage msg = this->getInternalMessageWCode(request);
+    msg.movement = request.movement + 1;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromShootRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_SHOOT};
+    return this->getInternalMessageWCode(request);
 }
 
 InternalMessage ClientProtocolParser::parseFromChangeWeaponRequest(const MessageFromClient& request) {
-    InternalMessage msg = InternalMessage{CODE_CHANGE_WEAPON};
+    InternalMessage msg = this->getInternalMessageWCode(request);
     msg.code_weapon_type = request.weaponType;
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromPlantBombRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_PLANT_BOMB};
+    return this->getInternalMessageWCode(request);
 }
 
 InternalMessage ClientProtocolParser::parseFromDefuseBombRequest(const MessageFromClient& request) {
-    return InternalMessage{CODE_DEFUSE_BOMB};
+    return this->getInternalMessageWCode(request);
+}
+
+InternalMessage ClientProtocolParser::getInternalMessageWCode(const MessageFromClient& request) {
+    return InternalMessage{this->commandsToCode.find(request.commandType)->second};
 }

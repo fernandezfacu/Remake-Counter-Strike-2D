@@ -17,18 +17,25 @@
 #define CODE_SUCCESS 0x01
 #define CODE_FAIL 0x00
 
-class ServerProtocol: public CommonProtocol {
+class ServerProtocol: public CommonProtocol, public CommonProtocolParser {
 private:
     std::unordered_map<bool, uint8_t> codeSuccessResponse;
-    std::unordered_map<CommandType, std::function<MessageFromClient()>> commandsManagers;
+    std::unordered_map<CommandType, std::function<MessageFromClient(const CommandType& command)>> commandsManagers;
     ServerProtocolParser protocolParser;
 
-    MessageFromClient receiveCreateUsernameRequest();
-    MessageFromClient receiveCreateGameRequest();
-    MessageFromClient receiveJoinGameRequest();
-    void sendBoard(const MessageFromServer& msg);
-    void sendListGames(const MessageFromServer& msg);
-
+    MessageFromClient receiveCreateUsernameRequest(const CommandType& command);
+    MessageFromClient receiveCreateGameRequest(const CommandType& command);
+    MessageFromClient receiveJoinGameRequest(const CommandType& command);
+    MessageFromClient receiveSelectSkinsRequest(const CommandType& command);
+    MessageFromClient receiveSelectMapRequest(const CommandType& command);
+    MessageFromClient receiveBuyWeaponRequest(const CommandType& command);
+    MessageFromClient receiveBuyWeaponAmmoRequest(const CommandType& command);
+    MessageFromClient receiveAimRequest(const CommandType& command);
+    MessageFromClient receiveMoveRequest(const CommandType& command);
+    MessageFromClient receiveShootRequest(const CommandType& command);
+    MessageFromClient receiveChangeWeaponRequest(const CommandType& command); 
+    MessageFromClient receivePlantBombRequest(const CommandType& command);
+    MessageFromClient receiveDefuseBombRequest(const CommandType& command);
 public:
     explicit ServerProtocol(Socket&& socket);
     void SendLobbyMessage(const ServerResponseLobby& msg);    
