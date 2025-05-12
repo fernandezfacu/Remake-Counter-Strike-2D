@@ -27,7 +27,6 @@ private:
     void manageCommand(const MessageFromClient& msg);
     void manageCreateUsername(const MessageFromClient& msg);
     void manageCreateGame(const MessageFromClient& msg);
-    void manageListGames(const MessageFromClient& msg);
     void manageJoinGame(const MessageFromClient& msg);
     void manageEndGame();
     bool isInGame();

@@ -12,10 +12,11 @@
 #include "../common/common_protocol.h"
 #include "../common/message.h"
 #include "../common/socket.h"
+#include "../common/codes_parser.h"
 
 #include "client_protocol_parser.h"
 
-class ClientProtocol: public CommonProtocol {
+class ClientProtocol: public CommonProtocol, public CodesParser {
 private:
     ClientProtocolParser parser;
     bool isAlive;
@@ -38,7 +39,7 @@ private:
 public:
     ClientProtocol(const std::string& hostname, const std::string& port);
     void SendCommand(const MessageFromClient& request);
-    ServerResponseMessage ReceiveCommand();
+    ServerResponseLobby ReceiveCommand();
     void Close();
     ~ClientProtocol();
 };

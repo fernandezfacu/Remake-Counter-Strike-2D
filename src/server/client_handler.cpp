@@ -69,7 +69,7 @@ void ClientHandler::manageCreateUsername(const MessageFromClient& msg) {
 }
 
 void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
-    auto response = this->server_monitor.CreateNewGame( *this);
+    auto response = this->server_monitor.CreateNewGame(this->GetUsername());
     if (!this->isInGame() && std::get<0>(response)) {
         this->my_game = msg.s;
         this->is_in_game = true;
@@ -84,7 +84,7 @@ void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
 }
 
 void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
-    bool success = this->server_monitor.JoinGame(msg.s, *this);
+    bool success = this->server_monitor.JoinGame(msg.s, this->GetUsername());
     if (!this->isInGame() && success) {
         this->is_in_game = true;
         this->my_game = msg.s;

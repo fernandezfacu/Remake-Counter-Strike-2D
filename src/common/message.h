@@ -34,7 +34,8 @@ struct MessageFromServer {
 };
 
 struct ServerResponseMessage {
-    std::string serverResponse;
+    uint8_t code;
+    uint8_t success;
 };
 
 struct ServerResponseLobby {

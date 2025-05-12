@@ -54,16 +54,18 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
     };
 }
 
-ServerResponseMessage ClientProtocol::ReceiveCommand() {
+ServerResponseLobby ClientProtocol::ReceiveCommand() {
     // aca para la etapa de lobby recibo:
         // rta de pedido de crear nombre de usuario
         // rta de pedido de crear partida
         // rta de pedio de joinear partida
         // notificacion de empezó partida -> aca lanzó los hilos y queues
-    std::string received = this->ReceiveString();
-    return ServerResponseMessage{
-            received,
-    };
+    uint8_t code = this->receiveByte();
+    ServerResponseLobby response = ServerResponseLobby{this->codeToCommands.find(code)->second};
+    if (this->codeToCommands.find(code)->second != CommandType::GAME_STARTED) {
+        response.success = this->receiveByte();
+    }
+    return response;
 }
 
 void ClientProtocol::SendCommand(const MessageFromClient& request) {

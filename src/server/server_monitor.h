@@ -10,7 +10,6 @@
 #include <tuple>
 
 #include "game_monitor.h"
-#include "client_handler.h"
 
 class ServerMonitor {
 private:
@@ -23,8 +22,8 @@ private:
 public:
     ServerMonitor();
     bool CreateUsername(const std::string& username);
-    std::tuple<bool, std::string> CreateNewGame(ClientHandler& client);
-    bool JoinGame(const std::string& gameName, ClientHandler& client);
+    std::tuple<bool, std::string> CreateNewGame(const std::string& username);
+    bool JoinGame(const std::string& gameName, const std::string& username);
     void MakePlayGame(const std::string& gameName, ClientHandler& client);
     GameMonitor& GetGameMonitor(const std::string& gameName);
     void ManageEndGame(const std::string& gameName);
