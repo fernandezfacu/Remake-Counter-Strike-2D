@@ -9,7 +9,7 @@
 #include "../common/commands.h"
 #include "../common/message.h"
 #include "../common/weaponParser.h"
-#include "../common/common_protocol_parser.h"
+#include "../common/codes_parser.h"
 
 class ClientProtocolParser : public CodesParser {
 private:

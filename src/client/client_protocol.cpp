@@ -55,6 +55,11 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
 }
 
 ServerResponseMessage ClientProtocol::ReceiveCommand() {
+    // aca para la etapa de lobby recibo:
+        // rta de pedido de crear nombre de usuario
+        // rta de pedido de crear partida
+        // rta de pedio de joinear partida
+        // notificacion de empezó partida -> aca lanzó los hilos y queues
     std::string received = this->ReceiveString();
     return ServerResponseMessage{
             received,
