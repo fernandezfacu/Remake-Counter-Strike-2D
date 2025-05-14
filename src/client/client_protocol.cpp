@@ -130,6 +130,63 @@ void ClientProtocol::sendDefuseBombRequest(const InternalMessage& request) {
 
 }
 
+/*
+
+void ClientProtocol::receive_snapshot() {
+    Snapshot snapshot = Snapshot{};
+    snasphot.phase = Phase(this->receiveByte());
+    snasphot.round_number = this->receiveByte();
+    snasphot.bomb_status = BombStatus(this->receiveByte());
+    snasphot.timer = this->receiveByte();
+    int size_players = this->receiveByte();
+    //snapshot.players = this->receive_players(size_players);
+    int size_bullets = this->receiveByte();
+    //snapshot.bullets = this->receive_bullets(size_bullets);
+}
+
+// ME LO COPIA ACA PARA VER QUE ENVIO
+
+std::vector<Player> ClientProtocol::receive_players(const int& size_players) {
+    std::vector<Player> players = {};
+    for (int i = 0; i < size_players; i++) {
+        std::string username = this->ReceiveString();
+        uint8_t pos_x = this->ReceiveByte();
+        uint8_t pos_y = this->ReceiveByte();
+        uint8_t pos_cros_x = this->ReceiveByte();
+        uint8_t pos_cros_y = this->ReceiveByte();
+        uint16_t money = this->ReceiveBigEndianNumber();
+        uint8_t health = this->ReceiveByte();
+        bool kave_knife = this->ReceiveByte() == 0x01;
+        Weapon primary_weapon = this->weaponParser(this->ReceiveByte());
+        uint16_t primary_weapon_bullets = this->ReceiveBigEndianNumber();
+        Weapon secondary_weapon = this->weaponParser(this->ReceiveByte());
+        uint16_t secondary_weapon_bullets = this->ReceiveBigEndianNumber();
+        bool have_bomb = this->ReceiveByte() == 0x01;
+        bool is_shooting = this->ReceiveByte() == 0x01;
+        uint8_t weapon_equipped_code = this->ReceiveByte();
+        players.push_back(Player(username, pos_x, pos_y, pos_cros_x, 
+        pos_cros_y, money, health, have_knife, primary_weapon, 
+        primary_weapon_bullets, secondary_weapon, secondary_weapon_bullets,
+        have_bomb, is_shooting, weapon_equipped_code));
+    }
+    return players;
+}
+
+
+std::vector<Bullet> ClientProtocol::receive_bullets(const int& size_bullets) {
+    std::vector<Bullet> bullets = {};
+    for (int i = 0; i < size_bullets; i++) {
+        uint8_t id = this->ReceiveByte();
+        uint8_t pos_x = this->ReceiveByte();
+        uint8_t pos_y = this->ReceiveByte();
+        uint8_t dir_x = this->ReceiveByte();
+        uint8_t dir_y = this->ReceiveByte();
+        bullets.push_back(Bullet(id, pos_x, pos_y, dir_x, dir_y));
+    }
+    return bullets;
+}
+*/
+
 void ClientProtocol::Close() {
     this->socket.shutdown(SHUT_RDWR);
     this->socket.close();

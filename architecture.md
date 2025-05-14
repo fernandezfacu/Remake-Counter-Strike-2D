@@ -168,7 +168,7 @@ _timer_: 1 byte con los segundos, dsp formateamos del lado del client
 
 (capaz el explode en _bomb_ no hace falta, con ver el timer deberiamos hacer la animación y ya)
 
-_cod-jugadores_: 0x40
+// _cod-jugadores_: 0x40 no deberia hacer falta
 
 _cant-jugadores_: 1 byte
 
@@ -187,6 +187,7 @@ asumo que 1 byte cada uno, dir_x dir_y es adonde miras, pos_x, pos_y la ubicacio
 
 - money
 - health: 1 byte 
+
 - p-weapon
 - p-ammo
 - s-weapon
@@ -211,7 +212,7 @@ idem tp1
     - 0x02 secondary
     - 0x03 bomb
 
-_cod-balas-disparadas_: 0x50
+// _cod-balas-disparadas_: 0x50 no deberia hacer falta
 
 _cant-balas-disparadas_: 1 byte asumo // innecesario tmb, recorro vector de players y me fijo quienes disparan. tengo la dirección del chabon tmb
 

@@ -39,9 +39,9 @@ void ServerProtocol::SendSnapshot(const Snapshot& snapshot) {
     this->SendByte(snapshot.round_number);
     this->SendByte(snapshot.bomb_status);
     this->SendByte(snapshot.timer);
-    this->SendByte(CODE_PLAYERS);
+    //this->SendByte(snapshot.players.size());
     //this->send_players(snapshot.players);
-    this->SendByte(CODE_BULLETS);
+    //this->SendByte(snapshot.bullets.size());
     //this->send_bullets(snapshot.bullets);
 }
 
@@ -69,10 +69,10 @@ void ServerProtocol::send_players(const std::vector<Player>& players) {
 void ServerProtocol::send_bullets(const std::vector<Bullet>& bullets) {
     for (auto bullet : bullets) {
         this->SendByte(bullet.id);
-        this->SendByte(player.pos_x);
-        this->SendByte(player.pos_y);
-        this->SendByte(player.dir_x);
-        this->SendByte(player.dir_y);
+        this->SendByte(bullet.pos_x);
+        this->SendByte(bullet.pos_y);
+        this->SendByte(bullet.dir_x);
+        this->SendByte(bullet.dir_y);
     }
 }
 */
