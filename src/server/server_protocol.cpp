@@ -26,83 +26,83 @@ ServerProtocol::ServerProtocol(Socket&& socket):
 }
 
 void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
-    this->SendByte(this->commandsToCode.find(msg.commandType)->second);
-    this->SendByte(this->codeSuccessResponse.find(msg.success)->second);
+    this->send_byte(this->commandsToCode.find(msg.commandType)->second);
+    this->send_byte(this->codeSuccessResponse.find(msg.success)->second);
 }
 
 void ServerProtocol::SendStartGame(const ServerResponseLobby& msg) {
-    this->SendByte(this->commandsToCode.find(msg.commandType)->second);
+    this->send_byte(this->commandsToCode.find(msg.commandType)->second);
 }
 
 void ServerProtocol::SendSnapshot(const Snapshot& snapshot) {
-    this->SendByte(snapshot.phase);
-    this->SendByte(snapshot.round_number);
-    this->SendByte(snapshot.bomb_status);
-    this->SendByte(snapshot.timer);
-    //this->SendByte(snapshot.players.size());
+    this->send_byte(snapshot.phase);
+    this->send_byte(snapshot.round_number);
+    this->send_byte(snapshot.bomb_status);
+    this->send_byte(snapshot.timer);
+    //this->send_byte(snapshot.players.size());
     //this->send_players(snapshot.players);
-    //this->SendByte(snapshot.bullets.size());
+    //this->send_byte(snapshot.bullets.size());
     //this->send_bullets(snapshot.bullets);
 }
 
 /*
 void ServerProtocol::send_players(const std::vector<Player>& players) {
     for (auto player : players) {
-        this->SendString(player.username);
-        this->SendByte(player.pos_x);
-        this->SendByte(player.pos_y);
-        this->SendByte(player.pos_cros_x);
-        this->SendByte(player.pos_cros_y);
-        this->SendBigEndianNumber(player.money);
-        this->SendByte(player.health);
-        this->SendByte(player.equipment.have_knife ? 0x01 : 0x00);
-        this->SendByte(this->weaponParser.getWeaponCode(player.equipment.primary_weapon));
-        this->SendBigEndianNumber(player.equipment.primary_weapon.bullets);
-        this->SendByte(this->weaponParser.getWeaponCode(player.equipment.secondary_weapon));
-        this->SendBigEndianNumber(player.equipment.secondary_weapon.bullets);
-        this->SendByte(player.equipment.have_bomb ? 0x01 : 0x00);
-        this->SendByte(player.is_shooting ? 0x01 : 0x00);
-        this->SendByte(player.weapon_equipped);
+        this->send_string(player.username);
+        this->send_byte(player.pos_x);
+        this->send_byte(player.pos_y);
+        this->send_byte(player.pos_cros_x);
+        this->send_byte(player.pos_cros_y);
+        this->send_big_endian_number(player.money);
+        this->send_byte(player.health);
+        this->send_byte(player.equipment.have_knife ? 0x01 : 0x00);
+        this->send_byte(this->weaponParser.getWeaponCode(player.equipment.primary_weapon));
+        this->send_big_endian_number(player.equipment.primary_weapon.bullets);
+        this->send_byte(this->weaponParser.getWeaponCode(player.equipment.secondary_weapon));
+        this->send_big_endian_number(player.equipment.secondary_weapon.bullets);
+        this->send_byte(player.equipment.have_bomb ? 0x01 : 0x00);
+        this->send_byte(player.is_shooting ? 0x01 : 0x00);
+        this->send_byte(player.weapon_equipped);
     }
 }
 
 void ServerProtocol::send_bullets(const std::vector<Bullet>& bullets) {
     for (auto bullet : bullets) {
-        this->SendByte(bullet.id);
-        this->SendByte(bullet.pos_x);
-        this->SendByte(bullet.pos_y);
-        this->SendByte(bullet.dir_x);
-        this->SendByte(bullet.dir_y);
+        this->send_byte(bullet.id);
+        this->send_byte(bullet.pos_x);
+        this->send_byte(bullet.pos_y);
+        this->send_byte(bullet.dir_x);
+        this->send_byte(bullet.dir_y);
     }
 }
 */
 
-MessageFromClient ServerProtocol::ReceiveCommand() {
-    uint8_t commandCode = this->receiveByte();
+MessageFromClient ServerProtocol::Receive_command() {
+    uint8_t commandCode = this->receive_byte();
     CommandType command = this->codeToCommands.find(commandCode)->second;
     return this->commandsManagers.find(command)->second(command);
 }
 
 MessageFromClient ServerProtocol::receiveCreateUsernameRequest(const CommandType& command) {
-    std::string username = this->ReceiveString();
+    std::string username = this->receive_string();
     return MessageFromClient{command, username};
 }
 
 MessageFromClient ServerProtocol::receiveCreateGameRequest(const CommandType& command) {
-    uint8_t size_players = this->receiveByte();
+    uint8_t size_players = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
     msg.size_players = size_players;
     return msg;
 }
 
 MessageFromClient ServerProtocol::receiveJoinGameRequest(const CommandType& command) {
-    std::string gameName = this->ReceiveString();
+    std::string gameName = this->receive_string();
     return MessageFromClient{command, gameName};
 }
 
 MessageFromClient ServerProtocol::receiveSelectSkinsRequest(const CommandType& command) {
-    uint8_t skin_id_tt = this->receiveByte();
-    uint8_t skin_id_ct = this->receiveByte();
+    uint8_t skin_id_tt = this->receive_byte();
+    uint8_t skin_id_ct = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
     msg.tt_skin = TerroristSkin(skin_id_tt - 1);
     msg.ct_skin = CounterTerroristSkin(skin_id_ct - 1);
@@ -111,21 +111,21 @@ MessageFromClient ServerProtocol::receiveSelectSkinsRequest(const CommandType& c
 
 MessageFromClient ServerProtocol::receiveSelectMapRequest(const CommandType& command) {
     MessageFromClient msg = MessageFromClient{command};
-    // msg.map_id = Map(this->receiveByte());
+    // msg.map_id = Map(this->receive_byte());
     // falta lo del enum o lo que fuere
     return msg;
 }
 
 MessageFromClient ServerProtocol::receiveBuyWeaponRequest(const CommandType& command) {
-    Weapon weapon = Weapon(this->receiveByte());
+    Weapon weapon = Weapon(this->receive_byte());
     MessageFromClient msg = MessageFromClient{command};
     msg.weapon = weapon;
     return msg;
 }
 
 MessageFromClient ServerProtocol::receiveBuyWeaponAmmoRequest(const CommandType& command) {
-    WeaponType weapon_type = WeaponType(this->receiveByte());
-    uint16_t bullets = this->receiveBigEndianNumber();
+    WeaponType weapon_type = WeaponType(this->receive_byte());
+    uint16_t bullets = this->receive_big_endian_number();
     MessageFromClient msg = MessageFromClient{command};
     msg.weaponType = weapon_type;
     msg.bullets = bullets;
@@ -133,8 +133,8 @@ MessageFromClient ServerProtocol::receiveBuyWeaponAmmoRequest(const CommandType&
 }
 
 MessageFromClient ServerProtocol::receiveAimRequest(const CommandType& command) {
-    uint8_t pos_x = this->receiveByte();
-    uint8_t pos_y = this->receiveByte();
+    uint8_t pos_x = this->receive_byte();
+    uint8_t pos_y = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
     msg.pos_x = pos_x;
     msg.pos_y = pos_y;
@@ -142,7 +142,7 @@ MessageFromClient ServerProtocol::receiveAimRequest(const CommandType& command) 
 }
 
 MessageFromClient ServerProtocol::receiveMoveRequest(const CommandType& command) {
-    uint8_t direction = this->receiveByte();
+    uint8_t direction = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
     msg.movement = Movement(direction - 1);
     return msg; 
@@ -154,7 +154,7 @@ MessageFromClient ServerProtocol::receiveShootRequest(const CommandType& command
 
 MessageFromClient ServerProtocol::receiveChangeWeaponRequest(const CommandType& command) {
     MessageFromClient msg = MessageFromClient{command};
-    msg.weaponType = WeaponType(this->receiveByte());
+    msg.weaponType = WeaponType(this->receive_byte());
     return msg;
 }
 

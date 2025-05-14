@@ -22,24 +22,30 @@ private:
     bool isAlive;
     std::unordered_map<CommandType, std::function<void(const InternalMessage& request)>> sendersMap;
 
-    void sendCreateUsernameRequest(const InternalMessage& request);
-    void sendCreateGameRequest(const InternalMessage& request);
-    void sendJoinGameRequest(const InternalMessage& request);
-    void sendSelectSkinsRequest(const InternalMessage& request);
-    void sendSelectMapRequest(const InternalMessage& request);
-    void sendBuyWeaponRequest(const InternalMessage& request);
-    void sendBuyWeaponAmmoRequest(const InternalMessage& request);
-    void sendAimRequest(const InternalMessage& request);
-    void sendMoveRequest(const InternalMessage& request);
-    void sendShootRequest(const InternalMessage& request);
-    void sendChangeWeaponRequest(const InternalMessage& request); 
-    void sendPlantBombRequest(const InternalMessage& request);
-    void sendDefuseBombRequest(const InternalMessage& request);
+    void send_create_username_request(const InternalMessage& request);
+    void send_create_game_request(const InternalMessage& request);
+    void send_join_game_request(const InternalMessage& request);
+    void send_select_skins_request(const InternalMessage& request);
+    void send_select_map_request(const InternalMessage& request);
+    void send_buy_weapon_request(const InternalMessage& request);
+    void send_buy_weapon_ammo_request(const InternalMessage& request);
+    void send_aim_request(const InternalMessage& request);
+    void send_move_request(const InternalMessage& request);
+    void send_shoot_request(const InternalMessage& request);
+    void send_change_weapon_request(const InternalMessage& request); 
+    void send_plant_bomb_request(const InternalMessage& request);
+    void send_defuse_bomb_request(const InternalMessage& request);
+
+    /*
+    std::vector<Bullet> receive_bullets(const int& size_bullets);
+    std::vector<Player> receive_players(const int& size_players);
+    */
 
 public:
     ClientProtocol(const std::string& hostname, const std::string& port);
-    void SendCommand(const MessageFromClient& request);
-    ServerResponseLobby ReceiveCommand();
+    void Send_command(const MessageFromClient& request);
+    ServerResponseLobby Receive_command();
+    // Snapshot receive_snapshot();
     void Close();
     ~ClientProtocol();
 };

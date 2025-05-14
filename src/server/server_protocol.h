@@ -36,14 +36,15 @@ private:
     MessageFromClient receivePlantBombRequest(const CommandType& command);
     MessageFromClient receiveDefuseBombRequest(const CommandType& command);
 
-    // void ServerProtocol::sendPlayers(const std::vector<Player>& players);
+    // void send_players(const std::vector<Player>& players);
+    // void send_bullets(const std::vector<Bullet>& bullets);
 public:
     explicit ServerProtocol(Socket&& socket);
     void SendLobbyMessage(const ServerResponseLobby& msg);
     void SendStartGame(const ServerResponseLobby& msg);
     void SendSnapshot(const Snapshot& snapshot);
     void SendMessage(const MessageFromServer& msg);
-    MessageFromClient ReceiveCommand();
+    MessageFromClient Receive_command();
     void kill();
     ~ServerProtocol();
 };

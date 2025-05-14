@@ -14,134 +14,135 @@
 ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& port):
         CommonProtocol(hostname, port), parser(), isAlive(true) {
     sendersMap[CommandType::CREATE_USERNAME] = [this](const InternalMessage& request) {
-        this->sendCreateUsernameRequest(request);
+        this->send_create_username_request(request);
     };
     sendersMap[CommandType::CREATE_GAME] = [this](const InternalMessage& request) {
-        return this->sendCreateGameRequest(request);
+        return this->send_create_game_request(request);
     };
     sendersMap[CommandType::JOIN_GAME] = [this](const InternalMessage& request) {
-        return this->sendJoinGameRequest(request);
+        return this->send_join_game_request(request);
     };
     sendersMap[CommandType::SELECT_SKINS] = [this](const InternalMessage& request) {
-        return this->sendSelectSkinsRequest(request);
+        return this->send_select_skins_request(request);
     };
     sendersMap[CommandType::SELECT_MAP] = [this](const InternalMessage& request) {
-        return this->sendSelectMapRequest(request);
+        return this->send_select_map_request(request);
     };
     sendersMap[CommandType::BUY_WEAPON] = [this](const InternalMessage& request) {
-        return this->sendBuyWeaponRequest(request);
+        return this->send_buy_weapon_request(request);
     };
     sendersMap[CommandType::BUY_AMMO] = [this](const InternalMessage& request) {
-        return this->sendBuyWeaponAmmoRequest(request);
+        return this->send_buy_weapon_ammo_request(request);
     };
     sendersMap[CommandType::AIM] = [this](const InternalMessage& request) {
-        return this->sendAimRequest(request);
+        return this->send_aim_request(request);
     };
     sendersMap[CommandType::MOVE] = [this](const InternalMessage& request) {
-        return this->sendMoveRequest(request);
+        return this->send_move_request(request);
     };
     sendersMap[CommandType::SHOOT] = [this](const InternalMessage& request) {
-        return this->sendShootRequest(request);
+        return this->send_shoot_request(request);
     };
     sendersMap[CommandType::CHANGE_WEAPON] = [this](const InternalMessage& request) {
-        return this->sendChangeWeaponRequest(request); 
+        return this->send_change_weapon_request(request); 
     };
     sendersMap[CommandType::PLANT_BOMB] = [this](const InternalMessage& request) {
-        return this->sendPlantBombRequest(request);
+        return this->send_plant_bomb_request(request);
     };
     sendersMap[CommandType::DEFUSE_BOMB] = [this](const InternalMessage& request) {
-        return this->sendDefuseBombRequest(request);
+        return this->send_defuse_bomb_request(request);
     };
 }
 
-ServerResponseLobby ClientProtocol::ReceiveCommand() {
+ServerResponseLobby ClientProtocol::Receive_command() {
     // aca para la etapa de lobby recibo:
         // rta de pedido de crear nombre de usuario
         // rta de pedido de crear partida
         // rta de pedio de joinear partida
         // notificacion de empezó partida -> aca lanzó los hilos y queues
-    uint8_t code = this->receiveByte();
+    uint8_t code = this->receive_byte();
     ServerResponseLobby response = ServerResponseLobby{this->codeToCommands.find(code)->second};
     if (this->codeToCommands.find(code)->second != CommandType::GAME_STARTED) {
-        response.success = this->receiveByte();
+        response.success = this->receive_byte();
     }
     return response;
 }
 
-void ClientProtocol::SendCommand(const MessageFromClient& request) {
+void ClientProtocol::Send_command(const MessageFromClient& request) {
     InternalMessage msg = this->parser.ParseMessage(request);
-    this->SendByte(msg.code_message);
+    this->send_byte(msg.code_message);
     this->sendersMap.find(request.commandType)->second(msg);
 }
 
-void ClientProtocol::sendCreateUsernameRequest(const InternalMessage& request) {
-    this->SendString(request.s);
+void ClientProtocol::send_create_username_request(const InternalMessage& request) {
+    this->send_string(request.s);
 }
 
-void ClientProtocol::sendCreateGameRequest(const InternalMessage& request) {
-    this->SendByte(request.size_players);
+void ClientProtocol::send_create_game_request(const InternalMessage& request) {
+    this->send_byte(request.size_players);
 }
 
-void ClientProtocol::sendJoinGameRequest(const InternalMessage& request) {
-    this->SendString(request.s);
+void ClientProtocol::send_join_game_request(const InternalMessage& request) {
+    this->send_string(request.s);
 }
 
-void ClientProtocol::sendSelectSkinsRequest(const InternalMessage& request) {
-    this->SendByte(request.skin_id_tt);
-    this->SendByte(request.skin_id_ct);
+void ClientProtocol::send_select_skins_request(const InternalMessage& request) {
+    this->send_byte(request.skin_id_tt);
+    this->send_byte(request.skin_id_ct);
 }
 
 
-void ClientProtocol::sendSelectMapRequest(const InternalMessage& request) {
-    this->SendByte(request.map_id);
+void ClientProtocol::send_select_map_request(const InternalMessage& request) {
+    this->send_byte(request.map_id);
 }
 
-void ClientProtocol::sendBuyWeaponRequest(const InternalMessage& request) {
-    this->SendByte(request.code_weapon);
+void ClientProtocol::send_buy_weapon_request(const InternalMessage& request) {
+    this->send_byte(request.code_weapon);
 }
 
-void ClientProtocol::sendBuyWeaponAmmoRequest(const InternalMessage& request) {
-    this->SendByte(request.code_weapon_type);
-    this->SendBigEndianNumber(request.bullets);
+void ClientProtocol::send_buy_weapon_ammo_request(const InternalMessage& request) {
+    this->send_byte(request.code_weapon_type);
+    this->send_big_endian_number(request.bullets);
 }
 
-void ClientProtocol::sendAimRequest(const InternalMessage& request) {
-    this->SendByte(request.pos_x);
-    this->SendByte(request.pos_y);
+void ClientProtocol::send_aim_request(const InternalMessage& request) {
+    this->send_byte(request.pos_x);
+    this->send_byte(request.pos_y);
 }
 
-void ClientProtocol::sendMoveRequest(const InternalMessage& request) {
-    this->SendByte(request.direction);
+void ClientProtocol::send_move_request(const InternalMessage& request) {
+    this->send_byte(request.direction);
 }
 
-void ClientProtocol::sendShootRequest(const InternalMessage& request) {
+void ClientProtocol::send_shoot_request(const InternalMessage& request) {
     
 }
 
-void ClientProtocol::sendChangeWeaponRequest(const InternalMessage& request) {
-    this->SendByte(request.code_weapon_type);
+void ClientProtocol::send_change_weapon_request(const InternalMessage& request) {
+    this->send_byte(request.code_weapon_type);
 }
 
-void ClientProtocol::sendPlantBombRequest(const InternalMessage& request) {
+void ClientProtocol::send_plant_bomb_request(const InternalMessage& request) {
     
 }
 
-void ClientProtocol::sendDefuseBombRequest(const InternalMessage& request) {
+void ClientProtocol::send_defuse_bomb_request(const InternalMessage& request) {
 
 }
 
 /*
 
-void ClientProtocol::receive_snapshot() {
+Sanpshot ClientProtocol::receive_snapshot() {
     Snapshot snapshot = Snapshot{};
-    snasphot.phase = Phase(this->receiveByte());
-    snasphot.round_number = this->receiveByte();
-    snasphot.bomb_status = BombStatus(this->receiveByte());
-    snasphot.timer = this->receiveByte();
-    int size_players = this->receiveByte();
+    snasphot.phase = Phase(this->receive_byte());
+    snasphot.round_number = this->receive_byte();
+    snasphot.bomb_status = BombStatus(this->receive_byte());
+    snasphot.timer = this->receive_byte();
+    int size_players = this->receive_byte();
     //snapshot.players = this->receive_players(size_players);
-    int size_bullets = this->receiveByte();
+    int size_bullets = this->receive_byte();
     //snapshot.bullets = this->receive_bullets(size_bullets);
+    return snapshot;
 }
 
 // ME LO COPIA ACA PARA VER QUE ENVIO
@@ -149,7 +150,7 @@ void ClientProtocol::receive_snapshot() {
 std::vector<Player> ClientProtocol::receive_players(const int& size_players) {
     std::vector<Player> players = {};
     for (int i = 0; i < size_players; i++) {
-        std::string username = this->ReceiveString();
+        std::string username = this->receive_string();
         uint8_t pos_x = this->ReceiveByte();
         uint8_t pos_y = this->ReceiveByte();
         uint8_t pos_cros_x = this->ReceiveByte();

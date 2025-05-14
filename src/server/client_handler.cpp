@@ -34,12 +34,12 @@ void ClientHandler::run() {
 
 void ClientHandler::launchLobby() {
     while (!this->isInGame()) {
-        MessageFromClient msg = this->protocol.ReceiveCommand();
+        MessageFromClient msg = this->protocol.Receive_command();
         this->manageCommand(msg);
     }
 }
 
-MessageFromClient ClientHandler::ReceivePlay() { return this->protocol.ReceiveCommand(); }
+MessageFromClient ClientHandler::ReceivePlay() { return this->protocol.Receive_command(); }
 
 void ClientHandler::launchGame() {
     while (!this->server_monitor.GetGameMonitor(this->my_game).isFinished()) {

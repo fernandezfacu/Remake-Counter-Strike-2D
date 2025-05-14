@@ -11,7 +11,7 @@ CommonProtocol::CommonProtocol(const std::string& hostname, const std::string& p
 
 CommonProtocol::CommonProtocol(Socket&& socket): socket(std::move(socket)) {}
 
-uint8_t CommonProtocol::receiveByte() {
+uint8_t CommonProtocol::receive_byte() {
     uint8_t number;
 
     size_t received = this->socket.recvall(&number, sizeof(number));
@@ -22,7 +22,7 @@ uint8_t CommonProtocol::receiveByte() {
     return number;
 }
 
-uint16_t CommonProtocol::receiveBigEndianNumber() {
+uint16_t CommonProtocol::receive_big_endian_number() {
     uint16_t number;
 
     size_t received = this->socket.recvall(&number, sizeof(number));
@@ -33,14 +33,14 @@ uint16_t CommonProtocol::receiveBigEndianNumber() {
     return ntohs(number);
 }
 
-void CommonProtocol::SendByte(const uint8_t& number) {
+void CommonProtocol::send_byte(const uint8_t& number) {
     size_t sended = this->socket.sendall(&number, sizeof(number));
     if (sended != sizeof(number)) {
         throw CommunicationEnded();
     }
 }
 
-void CommonProtocol::SendBigEndianNumber(const uint16_t& number) {
+void CommonProtocol::send_big_endian_number(const uint16_t& number) {
     uint16_t parsed = htons(number);
 
     size_t sended = this->socket.sendall(&parsed, sizeof(parsed));
@@ -49,8 +49,8 @@ void CommonProtocol::SendBigEndianNumber(const uint16_t& number) {
     }
 }
 
-void CommonProtocol::SendString(const std::string& s) {
-    this->SendBigEndianNumber(s.size());
+void CommonProtocol::send_string(const std::string& s) {
+    this->send_big_endian_number(s.size());
     size_t sended = this->socket.sendall(s.c_str(), s.size());
     if (sended != s.size()) {
         throw CommunicationEnded();
@@ -58,8 +58,8 @@ void CommonProtocol::SendString(const std::string& s) {
 }
 
 
-std::string CommonProtocol::ReceiveString() {
-    size_t lengthString = this->receiveBigEndianNumber();
+std::string CommonProtocol::receive_string() {
+    size_t lengthString = this->receive_big_endian_number();
     std::vector<uint8_t> vectorBytes(lengthString);
     size_t received = this->socket.recvall(vectorBytes.data(), vectorBytes.size());
     if (received != lengthString) {
