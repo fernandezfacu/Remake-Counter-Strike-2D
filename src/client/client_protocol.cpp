@@ -22,9 +22,6 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
     sendersMap[CommandType::JOIN_GAME] = [this](const InternalMessage& request) {
         return this->send_join_game_request(request);
     };
-    sendersMap[CommandType::SELECT_SKINS] = [this](const InternalMessage& request) {
-        return this->send_select_skins_request(request);
-    };
     sendersMap[CommandType::SELECT_MAP] = [this](const InternalMessage& request) {
         return this->send_select_map_request(request);
     };
@@ -80,11 +77,13 @@ void ClientProtocol::send_create_username_request(const InternalMessage& request
 
 void ClientProtocol::send_create_game_request(const InternalMessage& request) {
     this->send_byte(request.size_players);
+    this->send_select_skins_request(request);
 }
 
 void ClientProtocol::send_join_game_request(const InternalMessage& request) {
     this->send_string(request.s);
-}
+    this->send_select_skins_request(request);
+}   
 
 void ClientProtocol::send_select_skins_request(const InternalMessage& request) {
     this->send_byte(request.skin_id_tt);

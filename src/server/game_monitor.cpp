@@ -6,7 +6,7 @@ GameMonitor::GameMonitor(const std::string& creatorUsername): gameReady(false) {
     this->cts.emplace(creatorUsername);
 }
 
-bool GameMonitor::AddPlayer(const std::string& playerUsername){
+bool GameMonitor::AddPlayer(const std::string& playerUsername) {
     if (this->cts.size() < PLAYERS_CT && this->cts.size() < this->tts.size()) {
         this->cts.emplace(playerUsername);
         this->updateGameIsReady();

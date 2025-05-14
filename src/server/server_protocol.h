@@ -25,7 +25,6 @@ private:
     MessageFromClient receiveCreateUsernameRequest(const CommandType& command);
     MessageFromClient receiveCreateGameRequest(const CommandType& command);
     MessageFromClient receiveJoinGameRequest(const CommandType& command);
-    MessageFromClient receiveSelectSkinsRequest(const CommandType& command);
     MessageFromClient receiveSelectMapRequest(const CommandType& command);
     MessageFromClient receiveBuyWeaponRequest(const CommandType& command);
     MessageFromClient receiveBuyWeaponAmmoRequest(const CommandType& command);
@@ -35,6 +34,8 @@ private:
     MessageFromClient receiveChangeWeaponRequest(const CommandType& command); 
     MessageFromClient receivePlantBombRequest(const CommandType& command);
     MessageFromClient receiveDefuseBombRequest(const CommandType& command);
+
+    MessageFromClient receiveSelectSkinsRequest();
 
     // void send_players(const std::vector<Player>& players);
     // void send_bullets(const std::vector<Bullet>& bullets);

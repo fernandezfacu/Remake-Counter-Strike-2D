@@ -13,7 +13,6 @@ ServerProtocol::ServerProtocol(Socket&& socket):
     commandsManagers[CommandType::CREATE_USERNAME] = [this](const CommandType& command) { return receiveCreateUsernameRequest(command); };
     commandsManagers[CommandType::CREATE_GAME] = [this](const CommandType& command) { return receiveCreateGameRequest(command); };
     commandsManagers[CommandType::JOIN_GAME] = [this](const CommandType& command) { return receiveJoinGameRequest(command); };
-    commandsManagers[CommandType::SELECT_SKINS] = [this](const CommandType& command) { return receiveSelectSkinsRequest(command); };
     commandsManagers[CommandType::SELECT_MAP] = [this](const CommandType& command) { return receiveSelectMapRequest(command); };
     commandsManagers[CommandType::BUY_WEAPON] = [this](const CommandType& command) { return receiveBuyWeaponRequest(command); };
     commandsManagers[CommandType::BUY_AMMO] = [this](const CommandType& command) { return receiveBuyWeaponAmmoRequest(command); };
@@ -90,20 +89,23 @@ MessageFromClient ServerProtocol::receiveCreateUsernameRequest(const CommandType
 
 MessageFromClient ServerProtocol::receiveCreateGameRequest(const CommandType& command) {
     uint8_t size_players = this->receive_byte();
-    MessageFromClient msg = MessageFromClient{command};
+    MessageFromClient msg = this->receiveSelectSkinsRequest();
     msg.size_players = size_players;
     return msg;
 }
 
 MessageFromClient ServerProtocol::receiveJoinGameRequest(const CommandType& command) {
     std::string gameName = this->receive_string();
-    return MessageFromClient{command, gameName};
+    MessageFromClient msg = this->receiveSelectSkinsRequest();
+    msg.commandType = command;
+    msg.s = gameName;
+    return msg;
 }
 
-MessageFromClient ServerProtocol::receiveSelectSkinsRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receiveSelectSkinsRequest() {
     uint8_t skin_id_tt = this->receive_byte();
     uint8_t skin_id_ct = this->receive_byte();
-    MessageFromClient msg = MessageFromClient{command};
+    MessageFromClient msg = MessageFromClient{};
     msg.tt_skin = TerroristSkin(skin_id_tt - 1);
     msg.ct_skin = CounterTerroristSkin(skin_id_ct - 1);
     return msg;

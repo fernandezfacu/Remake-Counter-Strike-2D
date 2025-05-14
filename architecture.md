@@ -12,19 +12,7 @@ Puede enviar todos estos requests:
 
 - Crear partida
 
-    0x02 _amount-of-players_
-
-- Unirse partida
-
-    0x03 _length-match_ _match-id_
-
-    siendo _length-match_ un numero de dos bytes big endian
-
-UNA VEZ UNIDO:
-
-- Elegir skins
-
-    0x04 _skin-id-tt_: 1 byte _skin-id-ct_: 1 byte
+    0x02 _amount-of-players_ _skin-id-tt_: 1 byte _skin-id-ct_: 1 byte
 
     skin-id-tt:
         PHEONIX: 0x01,
@@ -38,7 +26,26 @@ UNA VEZ UNIDO:
         UK_SAS: 0x03,
         GIGN: 0x04
 
-    // podria hacer algo similar a lo del tp2 del OR para achicar esto un poco
+- Unirse partida
+
+    0x03 _length-match_ _match-id_ _skin-id-tt_: 1 byte _skin-id-ct_: 1 byte
+
+    skin-id-tt:
+        PHEONIX: 0x01,
+        L3337_KREW: 0x02,
+        ARTIC_AVENGER: 0x03,
+        GUERRILLA: 0x04
+
+    skin-id-ct:
+        SEAL_FORCE: 0x01,
+        GSG_9: 0x02,
+        UK_SAS: 0x03,
+        GIGN: 0x04
+
+    siendo _length-match_ un numero de dos bytes big endian
+
+UNA VEZ UNIDO:
+
 
 - Elegir mapa
 

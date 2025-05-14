@@ -35,6 +35,8 @@ void ClientHandler::run() {
 void ClientHandler::launchLobby() {
     while (!this->isInGame()) {
         MessageFromClient msg = this->protocol.Receive_command();
+        // aca en msg en caso de crear o joinear tengo las skins, en algun lado deberia guardarlo, asumo que pasarlo 
+        // al server_monitor -> game_monitor -> el game lo guarda
         this->manageCommand(msg);
     }
 }
