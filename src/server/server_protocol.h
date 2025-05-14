@@ -12,6 +12,7 @@
 #include "../common/message.h"
 #include "../common/socket.h"
 #include "../common/codes_parser.h"
+#include "../common/snapshot.h"
 
 #define CODE_SUCCESS 0x01
 #define CODE_FAIL 0x00
@@ -34,10 +35,13 @@ private:
     MessageFromClient receiveChangeWeaponRequest(const CommandType& command); 
     MessageFromClient receivePlantBombRequest(const CommandType& command);
     MessageFromClient receiveDefuseBombRequest(const CommandType& command);
+
+    // void ServerProtocol::sendPlayers(const std::vector<Player>& players);
 public:
     explicit ServerProtocol(Socket&& socket);
     void SendLobbyMessage(const ServerResponseLobby& msg);
     void SendStartGame(const ServerResponseLobby& msg);
+    void SendSnapshot(const Snapshot& snapshot);
     void SendMessage(const MessageFromServer& msg);
     MessageFromClient ReceiveCommand();
     void kill();

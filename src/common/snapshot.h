@@ -9,8 +9,8 @@ struct Snapshot {
     int round_number;
     BombStatus bomb_status;
     int timer;
-    // std::vector<player>
-    // std::vector<bullet>
+    // std::vector<Player>
+    // std::vector<Bullet>
 };
 
 

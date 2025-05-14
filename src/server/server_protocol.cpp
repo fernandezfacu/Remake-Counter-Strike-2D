@@ -34,6 +34,49 @@ void ServerProtocol::SendStartGame(const ServerResponseLobby& msg) {
     this->SendByte(this->commandsToCode.find(msg.commandType)->second);
 }
 
+void ServerProtocol::SendSnapshot(const Snapshot& snapshot) {
+    this->SendByte(snapshot.phase);
+    this->SendByte(snapshot.round_number);
+    this->SendByte(snapshot.bomb_status);
+    this->SendByte(snapshot.timer);
+    this->SendByte(CODE_PLAYERS);
+    //this->send_players(snapshot.players);
+    this->SendByte(CODE_BULLETS);
+    //this->send_bullets(snapshot.bullets);
+}
+
+/*
+void ServerProtocol::send_players(const std::vector<Player>& players) {
+    for (auto player : players) {
+        this->SendString(player.username);
+        this->SendByte(player.pos_x);
+        this->SendByte(player.pos_y);
+        this->SendByte(player.pos_cros_x);
+        this->SendByte(player.pos_cros_y);
+        this->SendBigEndianNumber(player.money);
+        this->SendByte(player.health);
+        this->SendByte(player.equipment.have_knife ? 0x01 : 0x00);
+        this->SendByte(this->weaponParser.getWeaponCode(player.equipment.primary_weapon));
+        this->SendBigEndianNumber(player.equipment.primary_weapon.bullets);
+        this->SendByte(this->weaponParser.getWeaponCode(player.equipment.secondary_weapon));
+        this->SendBigEndianNumber(player.equipment.secondary_weapon.bullets);
+        this->SendByte(player.equipment.have_bomb ? 0x01 : 0x00);
+        this->SendByte(player.is_shooting ? 0x01 : 0x00);
+        this->SendByte(player.weapon_equipped);
+    }
+}
+
+void ServerProtocol::send_bullets(const std::vector<Bullet>& bullets) {
+    for (auto bullet : bullets) {
+        this->SendByte(bullet.id);
+        this->SendByte(player.pos_x);
+        this->SendByte(player.pos_y);
+        this->SendByte(player.dir_x);
+        this->SendByte(player.dir_y);
+    }
+}
+*/
+
 MessageFromClient ServerProtocol::ReceiveCommand() {
     uint8_t commandCode = this->receiveByte();
     CommandType command = this->codeToCommands.find(commandCode)->second;
