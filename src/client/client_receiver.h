@@ -9,9 +9,9 @@
 class ClientReceiver : public Thread {
     private: 
         Queue<Snapshot> queue;
-        const ClientProtocol &protocol;
+        ClientProtocol &protocol;
     public:
-        ClientReceiver(const ClientProtocol& protocol);
+        ClientReceiver(ClientProtocol& protocol);
         void receive_snapshot_from_server();
         Snapshot pop_snapshot_from_queue();
         void run() override;

@@ -1,6 +1,6 @@
 #include "client_receiver.h"
 
-ClientReceiver::ClientReceiver(const ClientProtocol& protocol) : protocol(protocol) {}
+ClientReceiver::ClientReceiver(ClientProtocol& protocol) : protocol(protocol) {}
 
 void ClientReceiver::run() {
     this->_keep_running = true;
@@ -16,7 +16,7 @@ Snapshot ClientReceiver::pop_snapshot_from_queue() {
 
 void ClientReceiver::receive_snapshot_from_server() {
     Snapshot snapshot = this->protocol.Receive_snapshot();
-    // salta error porque la tengo comentada en el protocolo todavia
+    // salta error porque la tengo comentada en el protocolo
     this->queue.push(snapshot);
 }
 

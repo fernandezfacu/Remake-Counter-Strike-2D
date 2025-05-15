@@ -1,6 +1,6 @@
 #include "client_sender.h"
 
-ClientSender::ClientSender(const ClientProtocol& protocol) : protocol(protocol) {}
+ClientSender::ClientSender(ClientProtocol& protocol) : protocol(protocol) {}
 
 void ClientSender::run() {
     this->_keep_running = true;

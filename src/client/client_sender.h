@@ -9,9 +9,9 @@
 class ClientSender : public Thread {
     private: 
         Queue<MessageFromClient> queue;
-        const ClientProtocol &protocol;
+        ClientProtocol &protocol;
     public:
-        ClientSender(const ClientProtocol& protocol);
+        ClientSender(ClientProtocol& protocol);
         void add_command_to_queue(const MessageFromClient& msg);
         void send_command_to_server();
         void run() override;

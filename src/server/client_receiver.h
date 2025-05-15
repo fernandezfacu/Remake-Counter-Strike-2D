@@ -1,15 +1,22 @@
 #ifndef CLIENT_RECEIVER_H
 #define CLIENT_RECEIVER_H
 
-class ClientReceiver {
+#include "../common/queue.h"
+#include "../common/thread.h"
+#include "server_protocol.h"
+#include "../common/message.h"
+
+class ClientReceiver : public Thread {
     private:
-        &Queue<Command> queue; 
+        Queue<MessageFromClient> &queue; 
+        ServerProtocol &protocol;
         // Me guardo la referencia de la queue del gameloop a la que voy a pushear los comandos.
         // creo que deberian ser directamente los MessageFromClient; 
     public:
-        ClientReceiver();
+        ClientReceiver(Queue<MessageFromClient>& queue, ServerProtocol& protocol);
         void receive_command_from_client();
-        void add_command_to_queue(const Command& command);
+        void add_command_to_queue(const MessageFromClient& msg);
+        void run() override;
         ~ClientReceiver();
 };
 
