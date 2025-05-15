@@ -15,3 +15,6 @@ en enviar¿
     - client reciever: snapshots
     - server receiver: command (idk if i have made the struct or i may create a new one)
     - client sender: command
+
+    - Del lado del client ambas deberian ser threads porque el hilo principal se encarga de la UI
+    - Del lado del server tmb voy a lanzar dos hilos pq necesito el sender (este puede ser el mismo q el clientHandler original (quien se ocupa del lobby)), el receiver (uno nuevo), y ademas cuando arranca la partida necesitaria que ella sea un propio hilo (debería hacerlo facu ya esto)
