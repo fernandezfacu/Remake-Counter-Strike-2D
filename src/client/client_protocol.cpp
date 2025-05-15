@@ -61,6 +61,10 @@ ServerResponseLobby ClientProtocol::Receive_command() {
     ServerResponseLobby response = ServerResponseLobby{this->codeToCommands.find(code)->second};
     if (this->codeToCommands.find(code)->second != CommandType::GAME_STARTED) {
         response.success = this->receive_byte();
+        if (response.commandType == CommandType::CREATE_GAME) {
+            response.game_name = this->receive_string();
+            // recibo el nombre de la partida que el server me generó automáticamente
+        }
     }
     return response;
 }
@@ -143,8 +147,6 @@ Sanpshot ClientProtocol::receive_snapshot() {
     //snapshot.bullets = this->receive_bullets(size_bullets);
     return snapshot;
 }
-
-// ME LO COPIA ACA PARA VER QUE ENVIO
 
 std::vector<Player> ClientProtocol::receive_players(const int& size_players) {
     std::vector<Player> players = {};

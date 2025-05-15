@@ -23,7 +23,7 @@ private:
     bool is_in_game;
     std::string my_game;
 
-    void sendLobbyResponse(const CommandType& command, const bool& success);
+    void sendLobbyResponse(const CommandType& command, const bool& success, const std::string& game_name);
     void manageCommand(const MessageFromClient& msg);
     void manageCreateUsername(const MessageFromClient& msg);
     void manageCreateGame(const MessageFromClient& msg);

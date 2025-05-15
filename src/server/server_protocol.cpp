@@ -27,6 +27,9 @@ ServerProtocol::ServerProtocol(Socket&& socket):
 void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
     this->send_byte(this->commandsToCode.find(msg.commandType)->second);
     this->send_byte(this->codeSuccessResponse.find(msg.success)->second);
+    if (msg.game_name != "") {
+        this->send_string(msg.game_name);
+    }
 }
 
 void ServerProtocol::SendStartGame(const ServerResponseLobby& msg) {

@@ -41,6 +41,7 @@ struct ServerResponseMessage {
 struct ServerResponseLobby {
     CommandType commandType;
     bool success;
+    std::string game_name;
 };
 
 struct MessageFromClient {

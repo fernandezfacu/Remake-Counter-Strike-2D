@@ -8,7 +8,7 @@
 #include "server_monitor.h"
 
 ClientHandler::ClientHandler(Socket&& socket, ServerMonitor& server_monitor):
-        protocol(std::move(socket)), server_monitor(server_monitor) {
+        protocol(std::move(socket)), server_monitor(server_monitor), username(""), is_in_game(false), my_game("") {
     managersMap[CommandType::CREATE_USERNAME] = [this](const MessageFromClient& request) {
         return manageCreateUsername(request);
     };
@@ -50,8 +50,8 @@ void ClientHandler::launchGame() {
     this->_keep_running = false;
 }
 
-void ClientHandler::sendLobbyResponse(const CommandType& command, const bool& success) {
-    this->protocol.SendLobbyMessage(ServerResponseLobby{command, success});
+void ClientHandler::sendLobbyResponse(const CommandType& command, const bool& success, const std::string& game_name) {
+    this->protocol.SendLobbyMessage(ServerResponseLobby{command, success, game_name});
 }
 
 void ClientHandler::SendStatusGame(const MessageFromServer& msg) {
@@ -67,37 +67,38 @@ void ClientHandler::manageCreateUsername(const MessageFromClient& msg) {
     if (success) {
         this->username = msg.s;
     }
-    this->sendLobbyResponse(msg.commandType, success);
+    this->sendLobbyResponse(msg.commandType, success, "");
 }
 
 void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
     auto response = this->server_monitor.CreateNewGame(this->GetUsername());
-    if (!this->isInGame() && std::get<0>(response)) {
+    if (!this->isInGame() && std::get<0>(response) && this->username != "") {
         this->my_game = msg.s;
         this->is_in_game = true;
-        this->sendLobbyResponse(msg.commandType, true);
+        this->sendLobbyResponse(msg.commandType, true, this->my_game);
+        // DEBO MANDAR EL CODIGO DE LA PARTIDA
         this->server_monitor.GetGameMonitor(std::get<1>(response)).WaitPlayers();
         this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         // aca deberia lanzar el otro hilo y las queues
         return;
     }
-    this->sendLobbyResponse(msg.commandType, false);
+    this->sendLobbyResponse(msg.commandType, false, "");
 }
 
 void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
     bool success = this->server_monitor.JoinGame(msg.s, this->GetUsername());
-    if (!this->isInGame() && success) {
+    if (!this->isInGame() && success && this->username != "") {
         this->is_in_game = true;
         this->my_game = msg.s;
-        this->sendLobbyResponse(msg.commandType, true);
+        this->sendLobbyResponse(msg.commandType, true, "");
         this->server_monitor.GetGameMonitor(msg.s).WaitPlayers();
         this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         // aca deberia lanzar el otro hilo y las queues
         return;
     }
-    this->sendLobbyResponse(msg.commandType, false);
+    this->sendLobbyResponse(msg.commandType, false, "");
 }
 
 std::string ClientHandler::GetUsername() {
