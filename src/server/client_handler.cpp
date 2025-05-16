@@ -34,14 +34,14 @@ void ClientHandler::run() {
 
 void ClientHandler::launchLobby() {
     while (!this->isInGame()) {
-        MessageFromClient msg = this->protocol.Receive_command();
+        MessageFromClient msg = this->protocol.receive_command();
         // aca en msg en caso de crear o joinear tengo las skins, en algun lado deberia guardarlo, asumo que pasarlo 
         // al server_monitor -> game_monitor -> el game lo guarda
         this->manageCommand(msg);
     }
 }
 
-MessageFromClient ClientHandler::ReceivePlay() { return this->protocol.Receive_command(); }
+MessageFromClient ClientHandler::ReceivePlay() { return this->protocol.receive_command(); }
 
 void ClientHandler::launchGame() {
     while (!this->server_monitor.GetGameMonitor(this->my_game).isFinished()) {
@@ -51,7 +51,7 @@ void ClientHandler::launchGame() {
 }
 
 void ClientHandler::sendLobbyResponse(const CommandType& command, const bool& success, const std::string& game_name) {
-    this->protocol.SendLobbyMessage(ServerResponseLobby{command, success, game_name});
+    this->protocol.send_lobby_message(ServerResponseLobby{command, success, game_name});
 }
 
 void ClientHandler::SendStatusGame(const MessageFromServer& msg) {
@@ -78,7 +78,7 @@ void ClientHandler::manageCreateGame(const MessageFromClient& msg) {
         this->sendLobbyResponse(msg.commandType, true, this->my_game);
         // DEBO MANDAR EL CODIGO DE LA PARTIDA
         this->server_monitor.GetGameMonitor(std::get<1>(response)).WaitPlayers();
-        this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
+        this->protocol.send_start_game(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         // aca deberia lanzar el otro hilo y las queues
         return;
@@ -93,7 +93,7 @@ void ClientHandler::manageJoinGame(const MessageFromClient& msg) {
         this->my_game = msg.s;
         this->sendLobbyResponse(msg.commandType, true, "");
         this->server_monitor.GetGameMonitor(msg.s).WaitPlayers();
-        this->protocol.SendStartGame(ServerResponseLobby{CommandType::GAME_STARTED});
+        this->protocol.send_start_game(ServerResponseLobby{CommandType::GAME_STARTED});
         // enviar mensaje empezó partida
         // aca deberia lanzar el otro hilo y las queues
         return;

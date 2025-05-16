@@ -8,7 +8,7 @@ void ClientSender::add_snapshot_to_queue(const Snapshot& snapshot) {
 }
 void ClientSender::send_snapshot_to_client() {
     Snapshot snapshot = this->queue.pop();
-    this->protocol.SendSnapshot(snapshot);
+    this->protocol.send_snapshot(snapshot);
 }
 void ClientSender::run() {
     this->keep_running = true;

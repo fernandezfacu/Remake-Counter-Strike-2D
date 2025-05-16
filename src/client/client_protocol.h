@@ -43,8 +43,8 @@ private:
 
 public:
     ClientProtocol(const std::string& hostname, const std::string& port);
-    void Send_command(const MessageFromClient& request);
-    ServerResponseLobby Receive_command();
+    void send_command(const MessageFromClient& request);
+    ServerResponseLobby receive_command();
     // Snapshot receive_snapshot();
     void Close();
     ~ClientProtocol();

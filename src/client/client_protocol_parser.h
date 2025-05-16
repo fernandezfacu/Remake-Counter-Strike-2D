@@ -20,7 +20,6 @@ private:
 
     InternalMessage parseFromCreateUsernameRequest(const MessageFromClient& request);
     InternalMessage parseFromCreateGameRequest(const MessageFromClient& request);
-    InternalMessage parseFromSelectSkinsRequest(const MessageFromClient& request);
     InternalMessage parseFromSelectMapRequest(const MessageFromClient& request);
     InternalMessage parseFromJoinGameRequest(const MessageFromClient& request);
     InternalMessage parseFromBuyWeaponRequest(const MessageFromClient& request);
@@ -32,6 +31,8 @@ private:
     InternalMessage parseFromPlantBombRequest(const MessageFromClient& request);
     InternalMessage parseFromDefuseBombRequest(const MessageFromClient& request);
 
+    void parseSkins(const MessageFromClient& request, InternalMessage& msg);
+    
     InternalMessage getInternalMessageWCode(const MessageFromClient& request);
 
 public:

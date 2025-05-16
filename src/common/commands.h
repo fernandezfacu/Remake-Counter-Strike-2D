@@ -7,7 +7,6 @@ enum CommandType {
     CREATE_USERNAME,
     CREATE_GAME,
     JOIN_GAME,
-    SELECT_SKINS,
     SELECT_MAP,
     BUY_WEAPON,
     BUY_AMMO,

@@ -51,7 +51,7 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
     };
 }
 
-ServerResponseLobby ClientProtocol::Receive_command() {
+ServerResponseLobby ClientProtocol::receive_command() {
     // aca para la etapa de lobby recibo:
         // rta de pedido de crear nombre de usuario
         // rta de pedido de crear partida
@@ -69,7 +69,7 @@ ServerResponseLobby ClientProtocol::Receive_command() {
     return response;
 }
 
-void ClientProtocol::Send_command(const MessageFromClient& request) {
+void ClientProtocol::send_command(const MessageFromClient& request) {
     InternalMessage msg = this->parser.ParseMessage(request);
     this->send_byte(msg.code_message);
     this->sendersMap.find(request.commandType)->second(msg);
@@ -93,7 +93,6 @@ void ClientProtocol::send_select_skins_request(const InternalMessage& request) {
     this->send_byte(request.skin_id_tt);
     this->send_byte(request.skin_id_ct);
 }
-
 
 void ClientProtocol::send_select_map_request(const InternalMessage& request) {
     this->send_byte(request.map_id);

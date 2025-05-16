@@ -10,9 +10,6 @@ ClientProtocolParser::ClientProtocolParser() {
     parsersMap[CommandType::JOIN_GAME] = [this](const MessageFromClient& request) {
         return this->parseFromJoinGameRequest(request);
     };
-    parsersMap[CommandType::SELECT_SKINS] = [this](const MessageFromClient& request) {
-        return this->parseFromSelectSkinsRequest(request);
-    };
     parsersMap[CommandType::SELECT_MAP] = [this](const MessageFromClient& request) {
         return this->parseFromSelectMapRequest(request);
     };
@@ -52,20 +49,20 @@ InternalMessage ClientProtocolParser::parseFromCreateUsernameRequest(const Messa
 InternalMessage ClientProtocolParser::parseFromCreateGameRequest(const MessageFromClient& request) {
     InternalMessage msg = this->getInternalMessageWCode(request);
     msg.size_players = request.size_players;
+    this->parseSkins(request, msg);
     return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromJoinGameRequest(const MessageFromClient& request) {
     InternalMessage msg = this->getInternalMessageWCode(request);
     msg.s = request.s;
+    this->parseSkins(request, msg);
     return msg;
 }
 
-InternalMessage ClientProtocolParser::parseFromSelectSkinsRequest(const MessageFromClient& request) {
-    InternalMessage msg = this->getInternalMessageWCode(request);
+void ClientProtocolParser::parseSkins(const MessageFromClient& request, InternalMessage& msg) {
     msg.skin_id_tt = request.tt_skin + 1;
     msg.skin_id_ct = request.ct_skin + 1;
-    return msg;
 }
 
 InternalMessage ClientProtocolParser::parseFromSelectMapRequest(const MessageFromClient& request) {

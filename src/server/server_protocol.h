@@ -22,30 +22,30 @@ private:
     std::unordered_map<bool, uint8_t> codeSuccessResponse;
     std::unordered_map<CommandType, std::function<MessageFromClient(const CommandType& command)>> commandsManagers;
 
-    MessageFromClient receiveCreateUsernameRequest(const CommandType& command);
-    MessageFromClient receiveCreateGameRequest(const CommandType& command);
-    MessageFromClient receiveJoinGameRequest(const CommandType& command);
-    MessageFromClient receiveSelectMapRequest(const CommandType& command);
-    MessageFromClient receiveBuyWeaponRequest(const CommandType& command);
-    MessageFromClient receiveBuyWeaponAmmoRequest(const CommandType& command);
-    MessageFromClient receiveAimRequest(const CommandType& command);
-    MessageFromClient receiveMoveRequest(const CommandType& command);
-    MessageFromClient receiveShootRequest(const CommandType& command);
-    MessageFromClient receiveChangeWeaponRequest(const CommandType& command); 
-    MessageFromClient receivePlantBombRequest(const CommandType& command);
-    MessageFromClient receiveDefuseBombRequest(const CommandType& command);
+    MessageFromClient receive_create_username_request(const CommandType& command);
+    MessageFromClient receive_create_game_request(const CommandType& command);
+    MessageFromClient receive_join_game_request(const CommandType& command);
+    MessageFromClient receive_select_map_request(const CommandType& command);
+    MessageFromClient receive_buy_weapon_request(const CommandType& command);
+    MessageFromClient receive_buy_weapon_ammo_request(const CommandType& command);
+    MessageFromClient receive_aim_request(const CommandType& command);
+    MessageFromClient receive_move_request(const CommandType& command);
+    MessageFromClient receive_shoot_request(const CommandType& command);
+    MessageFromClient receive_change_weapon_request(const CommandType& command); 
+    MessageFromClient receive_plant_bomb_request(const CommandType& command);
+    MessageFromClient receive_defuse_bomb_request(const CommandType& command);
 
-    MessageFromClient receiveSelectSkinsRequest();
+    MessageFromClient receive_select_skins_request();
 
     // void send_players(const std::vector<Player>& players);
     // void send_bullets(const std::vector<Bullet>& bullets);
 public:
     explicit ServerProtocol(Socket&& socket);
-    void SendLobbyMessage(const ServerResponseLobby& msg);
-    void SendStartGame(const ServerResponseLobby& msg);
-    void SendSnapshot(const Snapshot& snapshot);
+    void send_lobby_message(const ServerResponseLobby& msg);
+    void send_start_game(const ServerResponseLobby& msg);
+    void send_snapshot(const Snapshot& snapshot);
     void SendMessage(const MessageFromServer& msg);
-    MessageFromClient Receive_command();
+    MessageFromClient receive_command();
     void kill();
     ~ServerProtocol();
 };

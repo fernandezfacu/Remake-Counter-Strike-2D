@@ -29,13 +29,13 @@ int Client::Run() {
 
 int Client::SendMessage(const std::string& message) {
     MessageFromClient request = this->parser.ParseRequest(message);
-    this->protocol.Send_command(request);
+    this->protocol.send_command(request);
     return 0;
 }
 
 void Client::PrintMessageReceived(const std::string& message) { std::cout << message; }
 
-ServerResponseMessage Client::ReceiveMessage() { return this->protocol.Receive_command(); }
+ServerResponseMessage Client::ReceiveMessage() { return this->protocol.receive_command(); }
 
 void Client::updateIsAlive(const std::string& response) {
     

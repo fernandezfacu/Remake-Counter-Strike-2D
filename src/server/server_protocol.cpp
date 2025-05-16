@@ -10,21 +10,21 @@ ServerProtocol::ServerProtocol(Socket&& socket):
         CommonProtocol(std::move(socket)),
         codeSuccessResponse({{true, CODE_SUCCESS}, 
                             {false, CODE_FAIL}}) {
-    commandsManagers[CommandType::CREATE_USERNAME] = [this](const CommandType& command) { return receiveCreateUsernameRequest(command); };
-    commandsManagers[CommandType::CREATE_GAME] = [this](const CommandType& command) { return receiveCreateGameRequest(command); };
-    commandsManagers[CommandType::JOIN_GAME] = [this](const CommandType& command) { return receiveJoinGameRequest(command); };
-    commandsManagers[CommandType::SELECT_MAP] = [this](const CommandType& command) { return receiveSelectMapRequest(command); };
-    commandsManagers[CommandType::BUY_WEAPON] = [this](const CommandType& command) { return receiveBuyWeaponRequest(command); };
-    commandsManagers[CommandType::BUY_AMMO] = [this](const CommandType& command) { return receiveBuyWeaponAmmoRequest(command); };
-    commandsManagers[CommandType::AIM] = [this](const CommandType& command) { return receiveAimRequest(command); };
-    commandsManagers[CommandType::MOVE] = [this](const CommandType& command) { return receiveMoveRequest(command); };
-    commandsManagers[CommandType::SHOOT] = [this](const CommandType& command) { return receiveShootRequest(command); };
-    commandsManagers[CommandType::CHANGE_WEAPON] = [this](const CommandType& command) { return receiveChangeWeaponRequest(command); };
-    commandsManagers[CommandType::PLANT_BOMB] = [this](const CommandType& command) { return receivePlantBombRequest(command); };
-    commandsManagers[CommandType::DEFUSE_BOMB] = [this](const CommandType& command) { return receiveDefuseBombRequest(command); };
+    commandsManagers[CommandType::CREATE_USERNAME] = [this](const CommandType& command) { return receive_create_username_request(command); };
+    commandsManagers[CommandType::CREATE_GAME] = [this](const CommandType& command) { return receive_create_game_request(command); };
+    commandsManagers[CommandType::JOIN_GAME] = [this](const CommandType& command) { return receive_join_game_request(command); };
+    commandsManagers[CommandType::SELECT_MAP] = [this](const CommandType& command) { return receive_select_map_request(command); };
+    commandsManagers[CommandType::BUY_WEAPON] = [this](const CommandType& command) { return receive_buy_weapon_request(command); };
+    commandsManagers[CommandType::BUY_AMMO] = [this](const CommandType& command) { return receive_buy_weapon_ammo_request(command); };
+    commandsManagers[CommandType::AIM] = [this](const CommandType& command) { return receive_aim_request(command); };
+    commandsManagers[CommandType::MOVE] = [this](const CommandType& command) { return receive_move_request(command); };
+    commandsManagers[CommandType::SHOOT] = [this](const CommandType& command) { return receive_shoot_request(command); };
+    commandsManagers[CommandType::CHANGE_WEAPON] = [this](const CommandType& command) { return receive_change_weapon_request(command); };
+    commandsManagers[CommandType::PLANT_BOMB] = [this](const CommandType& command) { return receive_plant_bomb_request(command); };
+    commandsManagers[CommandType::DEFUSE_BOMB] = [this](const CommandType& command) { return receive_defuse_bomb_request(command); };
 }
 
-void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
+void ServerProtocol::send_lobby_message(const ServerResponseLobby& msg) {
     this->send_byte(this->commandsToCode.find(msg.commandType)->second);
     this->send_byte(this->codeSuccessResponse.find(msg.success)->second);
     if (msg.game_name != "") {
@@ -32,11 +32,11 @@ void ServerProtocol::SendLobbyMessage(const ServerResponseLobby& msg) {
     }
 }
 
-void ServerProtocol::SendStartGame(const ServerResponseLobby& msg) {
+void ServerProtocol::send_start_game(const ServerResponseLobby& msg) {
     this->send_byte(this->commandsToCode.find(msg.commandType)->second);
 }
 
-void ServerProtocol::SendSnapshot(const Snapshot& snapshot) {
+void ServerProtocol::send_snapshot(const Snapshot& snapshot) {
     this->send_byte(snapshot.phase);
     this->send_byte(snapshot.round_number);
     this->send_byte(snapshot.bomb_status);
@@ -79,33 +79,33 @@ void ServerProtocol::send_bullets(const std::vector<Bullet>& bullets) {
 }
 */
 
-MessageFromClient ServerProtocol::Receive_command() {
+MessageFromClient ServerProtocol::receive_command() {
     uint8_t commandCode = this->receive_byte();
     CommandType command = this->codeToCommands.find(commandCode)->second;
     return this->commandsManagers.find(command)->second(command);
 }
 
-MessageFromClient ServerProtocol::receiveCreateUsernameRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_create_username_request(const CommandType& command) {
     std::string username = this->receive_string();
     return MessageFromClient{command, username};
 }
 
-MessageFromClient ServerProtocol::receiveCreateGameRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_create_game_request(const CommandType& command) {
     uint8_t size_players = this->receive_byte();
-    MessageFromClient msg = this->receiveSelectSkinsRequest();
+    MessageFromClient msg = this->receive_select_skins_request();
     msg.size_players = size_players;
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveJoinGameRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_join_game_request(const CommandType& command) {
     std::string gameName = this->receive_string();
-    MessageFromClient msg = this->receiveSelectSkinsRequest();
+    MessageFromClient msg = this->receive_select_skins_request();
     msg.commandType = command;
     msg.s = gameName;
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveSelectSkinsRequest() {
+MessageFromClient ServerProtocol::receive_select_skins_request() {
     uint8_t skin_id_tt = this->receive_byte();
     uint8_t skin_id_ct = this->receive_byte();
     MessageFromClient msg = MessageFromClient{};
@@ -114,21 +114,21 @@ MessageFromClient ServerProtocol::receiveSelectSkinsRequest() {
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveSelectMapRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_select_map_request(const CommandType& command) {
     MessageFromClient msg = MessageFromClient{command};
     // msg.map_id = Map(this->receive_byte());
     // falta lo del enum o lo que fuere
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveBuyWeaponRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_buy_weapon_request(const CommandType& command) {
     Weapon weapon = Weapon(this->receive_byte());
     MessageFromClient msg = MessageFromClient{command};
     msg.weapon = weapon;
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveBuyWeaponAmmoRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_buy_weapon_ammo_request(const CommandType& command) {
     WeaponType weapon_type = WeaponType(this->receive_byte());
     uint16_t bullets = this->receive_big_endian_number();
     MessageFromClient msg = MessageFromClient{command};
@@ -137,7 +137,7 @@ MessageFromClient ServerProtocol::receiveBuyWeaponAmmoRequest(const CommandType&
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveAimRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_aim_request(const CommandType& command) {
     uint8_t pos_x = this->receive_byte();
     uint8_t pos_y = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
@@ -146,28 +146,28 @@ MessageFromClient ServerProtocol::receiveAimRequest(const CommandType& command) 
     return msg;
 }
 
-MessageFromClient ServerProtocol::receiveMoveRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_move_request(const CommandType& command) {
     uint8_t direction = this->receive_byte();
     MessageFromClient msg = MessageFromClient{command};
     msg.movement = Movement(direction - 1);
     return msg; 
 }
 
-MessageFromClient ServerProtocol::receiveShootRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_shoot_request(const CommandType& command) {
     return MessageFromClient{command};
 }
 
-MessageFromClient ServerProtocol::receiveChangeWeaponRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_change_weapon_request(const CommandType& command) {
     MessageFromClient msg = MessageFromClient{command};
     msg.weaponType = WeaponType(this->receive_byte());
     return msg;
 }
 
-MessageFromClient ServerProtocol::receivePlantBombRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_plant_bomb_request(const CommandType& command) {
     return MessageFromClient{command};
 }
 
-MessageFromClient ServerProtocol::receiveDefuseBombRequest(const CommandType& command) {
+MessageFromClient ServerProtocol::receive_defuse_bomb_request(const CommandType& command) {
     return MessageFromClient{command};
 }
 

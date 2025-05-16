@@ -11,7 +11,7 @@ void ClientReceiver::run() {
 }
 
 void ClientReceiver::receive_command_from_client() {
-    MessageFromClient msg = this->protocol.Receive_command();
+    MessageFromClient msg = this->protocol.receive_command();
     add_command_to_queue(msg);
 }
 

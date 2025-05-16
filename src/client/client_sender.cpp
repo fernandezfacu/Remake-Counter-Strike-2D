@@ -16,7 +16,7 @@ void ClientSender::add_command_to_queue(const MessageFromClient& msg) {
 
 void ClientSender::send_command_to_server() {
     MessageFromClient msg = this->queue.pop();
-    protocol.Send_command(msg);
+    protocol.send_command(msg);
 }
 
 ClientSender::~ClientSender() {
