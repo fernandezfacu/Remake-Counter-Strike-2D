@@ -195,6 +195,7 @@ El editor requiere:
 
 Esto permite también jugar partidas al estilo **deathmatch**.
 
+
 ### Acerca del trabajo
 
 Este fue nuestro trabajo práctico grupal para la materia Taller de Programación I de la Facultad de Ingeniería Universidad de Buenos Aires, 1C2025.
@@ -209,19 +210,6 @@ Integrantes:
 - Rocha Diaz, Tomás
 
 Agradecemos por la ayuda y buena onda a nuestro corrector designado Mateo Capón :)
-
-### Acerca del trabajo
-
-Este fue nuestro trabajo práctico grupal para la materia Taller de Programación I de la Facultad de Ingeniería Universidad de Buenos Aires, 1C2025.
-
-#### Grupo 5
-
-Integrantes: 
-
-- Fernandez, Facundo 
-- Molina, Taiel
-- Rebollo, Matías
-- Rocha Diaz, Tomás
 
 ### Mi aporte
 - Desarrollo completo de la lógica de juego
