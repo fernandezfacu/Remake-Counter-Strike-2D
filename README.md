@@ -210,6 +210,24 @@ Integrantes:
 
 Agradecemos por la ayuda y buena onda a nuestro corrector designado Mateo Capón :)
 
+### Acerca del trabajo
+
+Este fue nuestro trabajo práctico grupal para la materia Taller de Programación I de la Facultad de Ingeniería Universidad de Buenos Aires, 1C2025.
+
+#### Grupo 5
+
+Integrantes: 
+
+- Fernandez, Facundo 
+- Molina, Taiel
+- Rebollo, Matías
+- Rocha Diaz, Tomás
+
+### Mi aporte
+- Desarrollo completo de la lógica de juego
+- Colaboración en el desarrollo de la arquitectura del servidor.
+- Colaboración en la parte gráfica del juego: manejo de fases de cada ronda e interpretación de información recibida desde el servidor.
+
 ### Créditos
 
 Clase Socket, Resolver, ResolverError y Queue fueron diseñadas y creadas por [Di Paola Martín](https://github.com/eldipa), docente de la materia.
